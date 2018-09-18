@@ -1,0 +1,115 @@
+{% extends "_base.html" %}
+
+{% load staticfiles %}
+
+{% block titulo %}
+    <title>Nueva Cosa A Ver</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+{% endblock %}
+
+{% block nombre %}Nueva Cosa A Ver{% endblock %}
+
+{% block contenido %}
+    {% load widget_tweaks %}
+
+    <div class="container-fluid">
+        <form method="post" action="" id="form"> 
+          {% csrf_token %}
+
+          {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+          {% endfor %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% for field in form.visible_fields %}
+            <div class="form-group mt-3 justify-content-center">
+                <div class="row  col-12 col-md-8 " style="margin:auto">
+                    <div class="col-12 col-sm-4 col-md-4">
+                    <strong>{{ field.label_tag }}</strong>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                    <!--<div class="col-xs-3 ml-3 ">-->
+                      {% if form.is_bound %}
+                        {% if field.errors %}
+                          {% render_field field class="form-control is-invalid" %}
+                          {% for error in field.errors %}
+                            <div class="invalid-feedback">
+                              {{ error }}
+                            </div>
+                          {% endfor %}
+                        {% else %}
+                          {% render_field field class="form-control is-valid" %}
+                        {% endif %}
+                      {% else %}
+                        {% render_field field class="form-control" %}
+                      {% endif %}
+                    </div>
+                </div>
+
+              {% if field.help_text %}
+                <small class="form-text text-muted text-center">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+          {% endfor %}
+                        <div class="form-group mt-3 justify-content-center">
+
+          {%for c in ciudades.all %}
+            <div class="row  col-12 col-md-8 " style="margin:auto">
+              <input required  type="radio" name="ciudad" value="{{c}}" onclick="seleccionar({{c.pk}})" >{{c}} 
+            </div>
+          {%endfor%}
+                        </div>
+          <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+            <button type="submit" class="btn btn-primary " style="margin:auto;">Añadir Cosa</button>
+          </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var seleccionada = -1;
+  function seleccionar(id){
+  seleccionada=id;
+    console.log(seleccionada);
+
+  }
+
+$('#form').on('submit',function(e){
+
+e.preventDefault();
+console.log($(this).serialize())
+
+      $.ajax({
+            url: '{% url "anadir_cosa" viaje %}',
+            data : $(this).serialize(),
+            type : "POST",
+            dataType: 'json',
+            success: function (data) {
+
+                        $.ajax({
+                                url: '{% url "anadir_cosa_ciudad"  %}',
+                                data: {
+                                  'id_cosa' : data.id,
+                                  'ciudad_': seleccionada,
+
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    alert("Se ha añadido el elemento");
+                                $(location).attr('href','{% url 'viaje' viaje %}');
+                                }
+                        });
+
+            },
+          });
+});
+</script>
+{% endblock %}

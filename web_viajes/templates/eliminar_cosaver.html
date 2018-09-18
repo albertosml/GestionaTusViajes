@@ -1,0 +1,22 @@
+{% extends "_base.html" %}
+{% load filtros  %}
+{% load staticfiles %}
+
+{% block titulo %}
+    <title>Eliminar Cosa a ver</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+{% endblock %}
+
+{% block nombre %}Eliminar Cosa a ver{% endblock %}
+
+{% block contenido %}
+	<p style="text-align: center;">¿Estás seguro de eliminar esta cosa a ver: {{ cosasporver.nombre }}?</p>
+
+	<form align="middle" action="" method="POST">
+	  {% csrf_token %}
+	  <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+          <button type="submit" class="btn btn-primary " style="margin:auto;">Sí, eliminar</button>
+      </div>
+	</form>
+{% endblock %}

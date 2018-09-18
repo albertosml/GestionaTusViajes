@@ -1,0 +1,277 @@
+{% extends "_base.html" %}
+{% load staticfiles %}
+{% block titulo %}
+    <title>Nuevo Viaje</title>
+ <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+{% endblock %}
+
+{% block nombre %}Nuevo Viaje{% endblock%}
+
+{% block contenido %}
+    {% load widget_tweaks %}
+
+    <div class="container-fluid">
+        <form method="post" action="" id="form"> 
+          {% csrf_token %}
+
+          {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+          {% endfor %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% for field in form.visible_fields %}
+            <div class="form-group mt-3 justify-content-center">
+                <div class="row  col-12 col-md-8 " style="margin:auto">
+                    <div class="col-12 col-sm-4 col-md-4">
+                    <strong>{{ field.label_tag }}</strong>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                    <!--<div class="col-xs-3 ml-3 ">-->
+                      {% if form.is_bound %}
+                        {% if field.errors %}
+                          {% render_field field class="form-control is-invalid" %}
+                          {% for error in field.errors %}
+                            <div class="invalid-feedback">
+                              {{ error }}
+                            </div>
+                          {% endfor %}
+                        {% else %}
+                          {% render_field field class="form-control is-valid" %}
+                        {% endif %}
+                      {% else %}
+                        {% render_field field class="form-control" %}
+                      {% endif %}
+                    </div>
+                </div>
+
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+            <div class="form-group mt-3 " >
+                  <div class="row  col-12 col-md-8 " style="margin:auto">
+                    <div class="col-4">
+                    <strong>Usuarios:</strong>
+                        </div>
+                    <div class="col-8">
+                        <input class="form-control" type="text" style="border-color: orange;" id="buscador_usuarios">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 " style="margin:auto; ">
+                <div class="row">
+                <div class="col-6 col-md-6 ">
+                    <p class="text-center"><strong ><i class="fa fa-users" style="font-size:24px"></i> Usuarios añadidos</strong></p>
+
+                <div id="usuarios_anadidos" class="col-6  col-sm-12" style="margin:auto; text-align:center;">
+                    <p id='user'>{{user.get_username}}</p>
+               </div>
+                    </div>
+                <div class="col-6 col-md-6 ">
+                <p class="text-center"><strong ><i class="fa fa-user-plus" style="font-size:24px"></i> Añadir usuarios</strong></p>
+
+                <div id="usuarios" class="col-12 col-md-8 " style="margin:auto;text-align:center;">
+
+                </div>
+                    </div>
+                    </div>
+            </div>
+            <br>
+            <div class="form-group mt-3 " >
+                  <div class="row  col-12 col-md-8 " style="margin:auto">
+                    <div class="col-4">
+                    <strong>Ciudades:</strong>
+                    </div>
+                    <div class="col-8">
+                        <input class="form-control" type="text" style="border-color: orange;" id="buscador_ciudades">
+                    </div>
+                </div>
+            </div>
+         <div class="col-12 col-md-8 " style="margin:auto; ">
+             <p>En esta aplicacion no están todas las ciudades del mundo, son los usuarios los que las van introduciendo a medida
+                    que estas vayan siendo visitadas. Para añadir una ciudad que no está, haga click en la enlace siguiente. <strong>Importante:</strong>
+                    Añade la ciudad con su nombre completo en <strong>español</strong>. Si tiene alguna falta de ortografía o similar
+                    , esta ciudad no será visible para posteriormente poder valorarla.</p>
+                    <p><a  target="_blank" href="{% url 'anadir_ciudad' %}">Añadir ciudad</a></p>
+                <div class="row">
+                <div class="col-6 col-md-6 ">
+                    <p class="text-center"><strong > Ciudades añadidas</strong></p>
+
+                <div id="ciudades_anadidas" class="col-6  col-sm-12" style="margin:auto; text-align:center;">
+
+               </div>
+                    </div>
+                <div class="col-6 col-md-6 ">
+                <p class="text-center"><strong > Añadir ciudades</strong></p>
+
+
+                <div id="ciudades_anadir" class="col-12 col-md-8 " style="margin:auto;text-align:center;">
+
+                </div>
+                    </div>
+                    </div>
+            </div>
+            <br>
+        <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+          <button type="submit" class="btn boton" style="margin:auto;">Añadir Viaje</button>
+        </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+//variables
+var usuarios_a_anadir= new Set();
+var ciudades_a_anadir= new Set();
+
+function anadir(user){
+    console.log(user.innerHTML);
+    usuarios_a_anadir.add(user.innerHTML);
+    console.log(user)
+    $("#usuarios_anadidos").append("<p id='user'> "+user.innerHTML+" </p>");
+}
+function anadir_ciudad(ciudad){
+    console.log(ciudad.innerHTML);
+    ciudades_a_anadir.add(ciudad.innerHTML);
+    console.log(ciudad)
+    $("#ciudades_anadidas").append("<p id='ciudad'> "+ciudad.innerHTML+" </p>");
+}
+
+//cargar el formulario
+$('#form').on('submit',function(e){
+
+alert("se esta enviando");
+e.preventDefault();
+
+console.log($(this).serialize())
+      $.ajax({
+            url: '{% url "anadir_viaje" %}',
+            dataType: 'json',
+            data : $(this).serialize(),
+            type : "POST",
+            success: function (data) {
+            alert("Se ha añadido el viaje ya ");
+            console.log(data);
+
+                if(data){
+                    alert("entra a enviar a la gente y eso")
+                    us = Array.from(usuarios_a_anadir);
+                    ciud = Array.from(ciudades_a_anadir);
+                    console.log(us);
+                    console.log(ciud);
+                    var cadenaC = "";
+                    for(c in ciud){
+                    cadenaC+=ciud[c]+",";
+                    }
+                    var cadenaU = "";
+                    for(u in us){
+                    cadenaU+=us[u]+",";
+                    }
+                    console.log(cadenaC)
+                    console.log(cadenaU)
+                    var variable =1;
+                    if(!data.personas){
+                    variable =0;
+                    }
+                    console.log(cadenaU);
+                    console.log("primero")
+                    console.log(variable);
+
+                     alert("Se ha añadido el elemento, ahora se van a cargar los usuarios");
+                    $.ajax({
+                            url: '{% url "anadir_usuarios_viaje" %}',
+                            dataType: 'json',
+                            data : {
+                            'usuarios' : cadenaU,
+                            'pk' : data.pk,
+                            'primero' : variable,
+                            },
+                            success : function(){
+
+                            }
+                       });
+                    alert("Se ha añadido el elemento, ahora se van a cargar las ciudades");
+                    viaje = data.pk;
+                    $.ajax({
+                            url: '{% url "anadir_ciudades_viaje" %}',
+                            dataType: 'json',
+                            data : {
+                            'ciudades': cadenaC,
+                            'pk' : data.pk
+                            },
+                            success : function(data){
+
+                                 $(location).attr('href','{% url 'mis_viajes'   %}');
+                            }
+                       });
+
+
+                    //location.reload()
+
+                 }
+            }
+       });
+});
+
+
+//buscador de usuarios
+$('#buscador_usuarios').on('keyup',function(e){
+e.preventDefault();
+console.log($(this).serialize())
+$("#usuarios").empty();
+   $.ajax({
+        url: '{% url "buscador_usuarios" %}',
+        dataType: 'json',
+        data : {
+        'datos' : $(this).serialize(),
+        'usuario' : $("#buscador_usuarios").val(),
+        },
+        success: function (data) {
+
+            var usuarios = data.usuarios;
+            console.log(usuarios)
+            for(us in usuarios){
+                var user = usuarios[us];
+                 $("#usuarios").addClass("maximo");
+                $("#usuarios").append("<p id="+user+" onclick=anadir("+user+")>"+user+"</p>");
+             }
+        }
+   });
+});
+
+//buscador de ciudades
+$('#buscador_ciudades').on('keyup',function(e){
+e.preventDefault();
+console.log($(this).serialize())
+$("#ciudades_anadir").empty();
+   $.ajax({
+        url: '{% url "buscador_ciudades" %}',
+        dataType: 'json',
+        data : {
+        'datos' : $(this).serialize(),
+        'ciudad' : $("#buscador_ciudades").val(),
+        },
+        success: function (data) {
+
+            var ciudades = data.ciudades;
+            console.log(ciudades)
+            for(us in ciudades){
+                var user = ciudades[us];
+                $("#ciudades_anadir").addClass("maximo");
+                $("#ciudades_anadir").append("<p id="+user+" onclick=anadir_ciudad("+user+")>"+user+"</p>");
+            }
+        }
+   });
+});
+</script>
+{% endblock %}

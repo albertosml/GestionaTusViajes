@@ -1,0 +1,222 @@
+{% extends "_base.html" %}
+
+{% load filtros  %}
+{% load staticfiles %}
+
+{% block titulo %}
+    <title>Ciudad</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+{% endblock %}
+
+{% block nombre %}{{ciudad.nombre_ciudad}}<br><em>{{ciudad.nombre_pais}}</em>{% endblock %}
+
+{% block scripts %}
+<script>
+valoraciones = {}
+
+    function abrir_valoracion(variable){
+        if(valoraciones[variable]==null){
+        valoraciones[variable] = true;
+        $("#valoracion_"+variable).addClass("d-block");
+        }else if (valoraciones[variable]==true){
+               valoraciones[variable] = false;
+        $("#valoracion_"+variable).removeClass("d-block");
+        }else{
+                   valoraciones[variable] = true;
+        $("#valoracion_"+variable).addClass("d-block");
+        }
+    }
+    function valorar(foto){
+        var valor = $("#rango_foto_"+foto).val();
+         $.ajax({
+        url: '{% url "puntuar_foto" %}',
+        data: {
+          'puntuacion': valor,
+          'foto' : foto
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data.exito) {
+            alert("Se ha puntuado correctamente");
+            location.reload();
+          }
+        }
+      });
+    }
+</script>
+{% endblock %}
+
+{% block contenido %}
+
+
+<div class="row container-fluid">
+  <div class="col-12 col-sm-6 col-md-4 text-center">
+    <p class="text-center h5 titulo_mis_viajes" style="width:100%;">Fotos <a href="{% url 'ciudad_foto' ciudad.pk %}"  style="margin:auto;"><i class="fa fa-plus" style="font-size:24px"></i></a>
+</p>
+    {% for foto in fotos %}
+    <br>
+    <img src="{{foto.imagen.url}}" alt="No hay foto" width="200" height="200"/>
+    <p>Monumento: {{foto.monumento}}</p>
+    <p>Subida por: {{foto.nombre_usuario}} </p>
+    <p>Nota: {{foto.nota}}</p>
+    <p>Número de valoraciones: {{foto.num_valoraciones}}</p>
+    {% if user.is_authenticated %}
+      {%if user != foto.nombre_usuario and not foto|valorada:valoraciones_foto %}
+       <button class="boton btn" onclick="abrir_valoracion({{foto.pk}})">
+          Valorar foto
+      </button>
+      <div id="valoracion_{{foto.pk}}" style="display:none">
+          <form>
+            <div class="form-group">
+              <label for="rango_foto_{{foto.pk}}">Valoracion de la foto</label>
+              <input type="range" list="valores" class="form-control-range" id="rango_foto_{{foto.pk}}" min="0" max="5" step="0.1">
+              <datalist id="valores">
+                <option value="0" label="0"></option>
+                <option value="1" label="1"></option>
+                <option value="2" label="2"></option>
+                <option value="3" label="3"></option>
+                <option value="4" label="4"></option>
+                <option value="5" label="5"></option>
+              </datalist>
+            </div>
+          </form>
+          <button class="boton btn" onclick="valorar({{foto.pk}})">
+              Enviar valoracion
+          </button>
+      </div>
+      {% elif foto|valorada:valoraciones_foto %}
+          Ya has valorado esta foto.
+      {% else %}
+      <p>Has subido esta foto, no puedes valorarla</p>
+      {% endif %}
+    {% endif %}
+    {% if user == foto.nombre_usuario %}
+     <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+            <a href="{% url 'ciudad_foto_delete' foto.pk %}" class="btn btn-primary " style="margin:auto;">Eliminar foto</a>
+      </div>
+      <br>
+    {% endif %}
+
+    {%endfor%}
+
+    <br>
+
+    {% if fotos.has_other_pages %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        {% if fotos.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page_f={{ fotos.previous_page_number }}&page_v={{valoraciones.number}}&page_e={{entradas.number}}" tabindex="-1">Anterior</a>
+          </li>
+        {% endif %}
+        <li class="page-item"><a class="page-link" href="">{{ fotos.number }}</a></li>
+        {% if fotos.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page_f={{ fotos.next_page_number }}&page_v={{valoraciones.number}}&page_e={{entradas.number}}">Siguiente</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <br>
+      <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="col-12 col-sm-6 col-md-4 text-center">
+      <p class="text-center h5 titulo_mis_viajes" style="width:100%;">Valoraciones <a href="{% url 'ciudad_valorar' ciudad.pk %}"  style="margin:auto;"><i class="fa fa-plus" style="font-size:24px"></i></a></p>
+    <div>
+      Numero de valoraciones: {{ciudad.num_valoraciones}}<br>
+      Valoracion de la ciudad: {{ciudad.nota}} <br>
+      Ha sido visitada en {{visitantes}} viajes <br>
+    </div>
+    {% for v in valoraciones %}
+    <br>
+    <div class="card card-default">
+      <div class="card-heading" style="background-color: gray;">
+        <p><strong>{{v.nombre_usuario}}</strong> el día: {{v.fecha_visita}}</p>
+      </div>
+      <div class="card-body">
+        <p><strong>Comentario: </strong> {{v.comentario}}</p>
+        <p><strong>Lo mejor: </strong> {{v.lo_mejor}}</p>
+        <p><strong>Lo peor: </strong> {{v.lo_peor}}</p>
+        <p><strong>Valoracion: </strong> {{v.media}}</p>
+      </div>
+    </div>
+    {% endfor %}
+
+    <br>
+
+    {% if valoraciones.has_other_pages %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        {% if valoraciones.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page_f={{ fotos.number }}&page_v={{valoraciones.previous_page_number}}&page_e={{entradas.number}}" tabindex="-1">Anterior</a>
+          </li>
+        {% endif %}
+        <li class="page-item"><a class="page-link" href="">{{ valoraciones.number }}</a></li>
+        {% if valoraciones.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page_f={{ fotos.number }}&page_v={{valoraciones.next_page_number}}&page_e={{entradas.number}}">Siguiente</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <br>
+      <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="col-12 col-sm-6 col-md-4 text-center">
+      <p class="text-center h5 titulo_mis_viajes" style="width:100%;">Foro <a href="{% url 'ciudad_entrada' ciudad.pk %}"  style="margin:auto;"><i class="fa fa-plus" style="font-size:24px"></i></a>
+</p>
+    {% for e in entradas %}
+    <br>
+    <div class="card card-default">
+      <div class="card-heading" style="background-color: gray;">
+        <p><strong>{{e.nombre_usuario}}</strong> el día: {{e.fecha_realizacion}}</p>
+      </div>
+      <div class="card-body">
+        <p>{{e.descripcion}}</p>
+      </div>
+    </div>
+    {% endfor %}
+
+    <br>
+
+    {% if entradas.has_other_pages %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        {% if entradas.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page_f={{ fotos.number }}&page_v={{valoraciones.number}}&page_e={{entradas.previous_page_number}}" tabindex="-1">Anterior</a>
+          </li>
+        {% endif %}
+        <li class="page-item"><a class="page-link" href="">{{ entradas.number }}</a></li>
+        {% if entradas.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page_f={{ fotos.number }}&page_v={{valoraciones.number}}&page_e={{ entradas.next_page_number }}">Siguiente</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <br>
+      <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+      </div>
+    {% endif %}
+  </div>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+from django.urls import path
+from . import views, forms
+
+urlpatterns = [
+    ##Listar elementos
+    #Hechas
+    path('',forms.CiudadListView.as_view(),name="inicio"),
+    path('viajes/',views.travels,name="mis_viajes"),
+    path('ciudad/<int:pk>',views.city,name="ciudad"),
+    path('viaje/<int:pk>/',views.travel ,name="viaje"),
+    path('perfil/<int:pk>',views.update_user,name='perfil'),
+    path('perfil/<int:pk>',views.update_user,name='perfil'),
+    path('registro/',views.create_user,name='registro'),
+
+    ##formulario
+    path('ciudad/nuevo/',views.add_city, name = "anadir_ciudad"),
+    path('ciudad/<int:pk>/valorar/',views.add_valoration, name = "ciudad_valorar"),
+    path('ciudad/<int:pk>/comentar/',views.add_entrada, name = "ciudad_entrada"),
+    path('ciudad/<int:pk>/nuevafoto/',views.add_photo, name = "ciudad_foto"),
+    path('ciudad/<int:pk>/deletefoto/', forms.FotoDelete.as_view(), name='ciudad_foto_delete'),
+    path('viaje/nuevo/',views.add_travel, name = "anadir_viaje"),
+    path('viaje/<int:id_viaje>/anadir_elemento',views.add_payment_travel, name = "anadir_elemento_viaje"),
+    #path('viaje/<int:id_viaje>/anadir_cosa_ver', views.add_thing_to_see_get, name="anadir_cosa_ver_cargar"),
+    #path('viaje/anadir_cosa_ver/procesar', views.add_thing_to_see, name="anadir_cosa_ver_procesar"),
+    path('viaje/<int:id_viaje>/anadir_cosa', views.add_thing, name="anadir_cosa"),
+    path('viaje/anadir_cosa_ciudad', views.add_thing_city, name="anadir_cosa_ciudad"),
+    #path('viaje/<int:id_viaje>/anadir_foto', views.add_photo_viaje, name="anadir_foto_viaje"),
+    #path('viaje/<int:id_viaje>/anadir_foto_v2', views.cargar_formulario_anadir_foto, name="anadir_foto_viaje_v2"),
+    path('viaje/<int:pk>/nuevafoto/',views.add_photo_viaje, name = "viaje_foto"),
+    path('viaje/<int:pk>/editar',forms.ViajeUpdate.as_view(),name='editar_viaje'),
+    path('viaje/anadir_foto_v2/procesar', views.anadir_foto, name="anadir_foto_procesar"),
+    path('viaje/<int:id_viaje>/editar_cosa/<int:pk>', forms.EditarCosaViaje.as_view(), name="editar_cosa"),
+    path('viaje/<int:id_viaje>/editar_elemento/<int:pk>', forms.EditarElementoViaje.as_view(), name="editar_elemento"),
+    path('viaje/<int:id_viaje>/deletefoto/<int:pk>', forms.FotoDelete.as_view(), name='viaje_foto_delete'),
+    path('viaje/<int:id_viaje>/deletecosa/<int:pk>', forms.CosaDelete.as_view(), name='viaje_cosaver_delete'),
+    path('viaje/<int:id_viaje>/deleteelemento/<int:pk>', forms.PresupuestoDelete.as_view(), name='viaje_elemento_delete'),
+    path('viaje/<int:pk>/delete', forms.ViajeDelete.as_view(), name='viaje_delete'),
+    path('pagar/', views.pagar, name="pagar"),
+    path('visitar/', views.visitar, name="visitar"),
+    path('buscador/usuario/', views.buscar_usuarios, name="buscador_usuarios"),
+    path('buscador/ciudad/', views.buscar_ciudades, name="buscador_ciudades"),
+    path('obtener/', views.obtener_datos_ciudad, name="obtener_datos_ciudad"),
+    path('anadir/usuarios/viaje/', views.anadir_usuarios_viaje, name="anadir_usuarios_viaje"),
+    path('anadir/ciudades/viaje/', views.anadir_ciudades_viaje, name="anadir_ciudades_viaje"),
+    path('puntuar_foto', views.puntuar_foto, name="puntuar_foto"),
+    path('anadir_valoracion', views.add_valoracion, name="anadir_valoracion"),
+    path('anadir_parametros_valoracion>', views.add_parametres_valoration, name="anadir_parametros"),
+    path('gestionar_elemento_presupuesto>', views.gestionar_elemento_presupuesto, name="gestionar_elemento_presupuesto"),
+    path('editar_viaje>', views.editar_viaje, name="editar_viaje"),
+    path('editar_elemento_presupuesto>', views.editar_elemento, name="editar_elemento"),
+]

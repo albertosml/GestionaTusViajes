@@ -1,0 +1,138 @@
+
+
+.borde_viajes{
+    border-style: ridge;
+    border-radius : 15px;
+}
+.borde_ciudades{
+
+ border-style: ridge;
+    border-radius : 15px;
+ margin : 0.2em;
+}
+.titulo_mis_viajes{
+margin-top : 1em;
+margin-bottom : 1em;
+color: #17a2b8 !important;
+}
+.titulo_ciudad{
+margin-top : 1em;
+margin-bottom : 1em;
+color: #004085 !important;
+}
+.viajes_mis_viajes{
+
+margin-top: 0.2em;
+margin-bottom: 0.2em;
+}
+
+.imagen_ciudad{
+
+background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9oMftC3EIThc8k9YXFGpFhdaEnT7o30INOdmNURgUUpdUIjFo");
+
+}
+.fondo_viajes_siguientes{
+background-color : #dce8ed
+}
+.fondo_viajes_siguientes{
+background-color : #dce8ed
+}
+.fondo_ciudades{
+background-color : #dce8ed
+}
+
+.centro{
+    margin:auto !important;
+}
+
+.viaje_ciudad{
+display : inline-block;
+font-style : italic;
+background-color : #eeeeee;
+border : 1px;
+border-radius : 4px;
+margin : 1px;
+padding : 1px;
+}
+
+h3 {
+color: #145A32 !important;
+}
+.cursiva{
+font-weight : italic !important;
+}
+
+.titulos_elemento{
+color :  #4A235A  !important;
+font-weight : bold;
+}
+.campos{
+color :  #4A235A  !important;
+font-style : italic;
+
+}
+.seguido {
+display : inline-block;
+}
+
+a:link {
+    text-decoration: none;
+    color:orange;
+}
+
+a:visited {
+    text-decoration: none;
+    color:orange;
+    font-style:italic !important;
+}
+
+a:hover {
+    text-decoration: underline;
+    color:orange !important;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+.boton{
+background-color : orange;
+color:white;
+}
+.boton hover{
+background-color: blue !important;
+
+}
+.item{
+color:#3c4248;
+
+}
+
+input {
+border-color: #17a2b8 !important;
+
+}
+select {
+border-color: #17a2b8 !important;
+}
+input[type=checkbox] active{
+box-shadow : 0px !important;
+}
+
+.maximo {
+max-height : 500px;
+overflow: scroll;
+}
+.no_margin_abajo{
+margin-bottom: 0px !important;
+color: #3c4248; !important;
+font-weight : bold;
+}
+.padd {
+padding:2px;
+}
+
+.ajustar{
+width : 80% !important;
+
+}

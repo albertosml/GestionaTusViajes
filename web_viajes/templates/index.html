@@ -1,0 +1,66 @@
+{% extends "_base.html" %}
+{% load staticfiles %}
+{% block titulo %}
+    <title>Inicio</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+{% endblock %}
+
+{% block nombre %}Ciudades{% endblock %}
+
+{% block contenido %}
+    <br>
+    {% for ciudad in ciudad_list %}
+    <div class="row container-fluid" >
+      <div class="col-6 text-center">
+        {{ciudad}} &nbsp <a href="" onclick="verNota({{ciudad.pk}})"><span id="info" class="fa fa-info-circle"></span></a>
+      </div>
+      <div class="col-6 text-center">
+        <a href="{% url 'ciudad' ciudad.pk %}" class="btn btn-danger" style="margin:auto;">Ver Ciudad</a>
+      </div>
+    </div>
+    <br>
+    {%endfor%}
+
+    {% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}" tabindex="-1">Anterior</a>
+          </li>
+        {% endif %}
+        <li class="page-item"><a class="page-link" href="">{{ page_obj.number }}</a></li>
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">Siguiente</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <br>
+      <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+            <a href="{% url 'anadir_ciudad' %}" class="btn btn-primary " style="margin:auto;">Añadir Ciudad</a>
+      </div>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  function verNota(pk) {
+    $.ajax({
+        url: '{% url "obtener_datos_ciudad" %}',
+        dataType: 'json',
+        data : {
+          'pk' : pk,
+        },
+        success: function (data) {
+          alert(data.ciudad + "\nNota: " + data.nota + "\nNúmero de valoraciones: " + data.num_valoraciones);
+        }
+    });
+  }
+</script>
+{% endblock %}

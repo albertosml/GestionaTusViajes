@@ -1,0 +1,54 @@
+{% extends "_base.html" %}
+
+{% load staticfiles %}
+
+{% block titulo %}
+    <title>Nueva Foto</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+{% endblock %}
+
+{% block nombre %}Foto{% endblock %}
+
+{% block contenido %}
+	{% load widget_tweaks %}
+
+	<div class="container-fluid">
+	    <form method="post" action="" enctype="multipart/form-data">
+	      {% csrf_token %}
+
+	      {% for hidden_field in form.hidden_fields %}
+	        {{ hidden_field }}
+	      {% endfor %}
+
+	      {% if form.non_field_errors %}
+	        <div class="alert alert-danger" role="alert">
+	          {% for error in form.non_field_errors %}
+	            {{ error }}
+	          {% endfor %}
+	        </div>
+	      {% endif %}
+
+	      {% for field in form.visible_fields %}
+            <div class="form-group mt-3 justify-content-center">
+                <div class="row  col-12 col-md-8 " style="margin:auto">
+                    <div class="col-12 col-sm-4 col-md-4">
+                    	<strong>{{ field.label_tag }}</strong>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                          {% render_field field %}
+                    </div>
+                </div>
+
+              {% if field.help_text %}
+                <small class="form-text text-muted text-center">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+	      <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+          	<button type="submit" class="btn btn-primary " style="margin:auto;">Añadir Foto</button>
+          </div>
+	    </form>
+	</div>
+{% endblock %}

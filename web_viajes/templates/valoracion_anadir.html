@@ -1,0 +1,154 @@
+{% extends "_base.html" %}
+
+{% load filtros  %}
+{% load staticfiles %}
+
+{%block titulo%}
+    <title>Añadir Valoración</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+{% endblock %}
+
+{% block nombre %}Añadir Valoración{% endblock %}
+
+{% block contenido%}
+  {% load widget_tweaks %}
+
+	<div class="container-fluid">
+	  <form method="post" action="" id="form">
+	    {% csrf_token %}
+
+      {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% for field in form.visible_fields %}
+        <div class="form-group mt-3 justify-content-center">
+          <div class="row  col-12 col-md-8 " style="margin:auto">
+            <div class="col-12 col-sm-4 col-md-4">
+              <strong>{{ field.label_tag }}</strong>
+            </div>
+            <div class="col-12 col-sm-8">
+              {% if form.is_bound %}
+                {% if field.errors %}
+                  {% render_field field class="form-control is-invalid" %}
+                  {% for error in field.errors %}
+                    <div class="invalid-feedback">
+                      {{ error }}
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  {% render_field field class="form-control is-valid" %}
+                {% endif %}
+              {% else %}
+                {% render_field field class="form-control" %}
+              {% endif %}
+            </div>
+          </div>
+
+          {% if field.help_text %}
+            <small class="form-text text-muted text-center">{{ field.help_text }}</small>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+			{% for i in items %}
+          <div class="form-group">
+            <p class="parametro">{{i.parametro}}</p>
+            <input type="range" list="valores" class="form-control-range" id="p_{{i.parametro}}" min="0" max="5" step="0.1"  onchange="actualizar('{{i.parametro}}')">
+            <datalist id="valores">
+              <option value="0" label="0">
+              <option value="1" label="1">
+              <option value="2" label="2">
+              <option value="3" label="3">
+              <option value="4" label="4">
+              <option value="5" label="5">
+            </datalist>
+          </div>
+			{% endfor %}
+
+	    <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+          <button type="submit" class="btn btn-primary " style="margin:auto;">Valorar</button>
+      </div>
+		</form>
+	</div>
+</body>
+{% endblock %}
+
+{% block scripts %}
+<script>
+var diccionario ={};
+function actualizar(pa){
+var valor = $("#p_"+pa).val();
+console.log(valor);
+diccionario[""+pa] = valor;
+console.log(diccionario)
+}
+
+var parametros = $('p.parametro');
+console.log(parametros.length)
+for (var i = 0 ; i<parametros.length-1;i++){
+diccionario[parametros[i].innerHTML]= "2.5";
+}
+console.log(diccionario);
+
+
+$('#form').on('submit',function(e){
+
+  e.preventDefault();
+  console.log($(this).serialize());
+        $.ajax({
+            url: '{% url "anadir_valoracion" %}',
+             type : "POST",
+            dataType: 'json',
+            data : $(this).serialize(),
+            success: function (data) {
+
+            console.log(data);
+
+            //opbtenemos los datos de los range
+            var cadena = "";
+            for(i in diccionario){
+            cadena+=""+i+":"+diccionario[i]+",";
+                console.log(i);
+                console.log(diccionario[i]);
+            }
+    console.log(cadena);
+                  if(data){
+                      $.ajax({
+                              url: '{% url "anadir_parametros" %}',
+                              dataType: 'json',
+                              data : {
+                              'ciudad' : {{ciudad}},
+                              'idValoracion': data.valoracion,
+                              'datos' : cadena
+                              },
+                              success : function(d){
+                              location.reload();
+                              alert("Se ha añadido la valoracion de la ciudad.")
+                                 // Generate URL without "id" bit
+                                    var url = "{% url 'ciudad' ciudad %}";
+
+                                     document.location.href = url;
+                              }
+                         });
+                  }
+                },
+                error : function(){
+                	alert("error")
+
+                }
+         });
+  });
+
+
+</script>
+{% endblock %}

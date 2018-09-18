@@ -1,0 +1,657 @@
+{% extends "_base.html" %}
+
+{% load filtros  %}
+{% load staticfiles %}
+
+{%block titulo%}
+  <title>Viaje </title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+  integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+  crossorigin=""/>
+{% endblock %}
+
+{% block nombre %}{{viaje.nombre}}
+
+    {% if viaje.usuario_creador|comparar:user.get_username %}
+        <a href="{% url 'editar_viaje' viaje.pk %}"><i class="fa fa-edit" style="font-size:24px"></i></a>
+        <a href="{% url 'viaje_delete' viaje.pk %}"><i class="fa fa-remove" style="font-size:24px"></i></a>
+       {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+  integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+  crossorigin=""></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+$( "input[id*='map']" ).addClass("ajustar");
+  var geocoder = new google.maps.Geocoder();
+
+  var iconos = [];
+
+  var redIcon = new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+
+  iconos.push( new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        }) );
+
+  iconos.push( new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        }) );
+
+  iconos.push( new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        }) );
+
+  iconos.push( new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        }) );
+
+  iconos.push( new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        }) );
+
+  iconos.push( new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        }) );
+
+  iconos.push( new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        }) );
+
+  var cont = 0;
+
+  function cargarCiudad(ciudad){
+    var id = "map".concat(ciudad);
+
+    geocoder.geocode( { 'address': ciudad }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
+        var mymap = L.map(id).setView([latitude, longitude], 14);
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+              maxZoom: 18,
+              attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                  '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                  'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+              id: 'mapbox.streets'
+          }).addTo(mymap);
+
+        {% for key,value in cosas_fecha.items %}
+          {% for cosa in value %}
+            var city = "{{cosa.ciudad}}";
+            var direccion = "{{cosa.nombre}}, {{cosa.ciudad}}";
+            geocoder.geocode( { 'address': direccion }, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                var visto = "{{cosa.visto}}";
+                var marker;
+                if(visto == "True") { marker = L.marker([latitude,longitude], {icon : redIcon}); }
+                else { marker = L.marker([latitude,longitude], {icon: iconos["{{key}}" % 7]}); }
+                marker.bindPopup("{{cosa.nombre}}");
+                marker.addTo(mymap);
+              } 
+            }); 
+          {% endfor %}
+        {% endfor%}
+      } 
+    }); 
+  }
+
+  {% for c in viaje.ciudades.all%}
+    $("#mapas").append("<p>Mapa de {{c.nombre_ciudad}}:</p>");
+    $("#mapas").append("<div id=\"map{{c}}\" style=\"width: 80%;margin:auto; height: 400px;\"></div>");
+    cargarCiudad("{{c}}");
+  {% endfor %}
+
+  function pagar(a,b){
+  console.log(a);
+  console.log(b);
+  $.ajax({
+        url: '{% url "pagar" %}',
+        data: {
+          'elemento': a,
+          'pago' : b
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data.exito) {
+            alert("Se ha pagado correctamente");
+             location.reload();
+          }
+        }
+      });
+  }
+  function ver_detalle(cosa){
+
+   var div = $("#d_"+cosa);
+   var ver = $("#vd_"+cosa);
+   var ocultar = $("#od_"+cosa);
+  if (div.hasClass("d-none")){
+  div.removeClass("d-none");
+  div.addClass("d-block");
+  ver.removeClass("d-block");
+    ver.addClass("d-none");
+    ocultar.removeClass("d-none");
+      ocultar.addClass("d-block");
+
+  }else{
+   div.addClass("d-none");
+   div.removeClass("d-block");
+    ver.removeClass("d-none");
+    ver.addClass("d-block");
+    ocultar.removeClass("d-block");
+      ocultar.addClass("d-none");
+  }
+
+
+  }
+   function cambia(a){
+      console.log(a);
+      var el = document.getElementById(a);
+      var selecc = el.checked;
+      var devolver;
+      if(selecc==true){
+        devolver=1
+      }else{
+      devolver=0
+      }
+      console.log(devolver);
+      $.ajax({
+            url: '{% url "visitar" %}',
+            data: {
+              'elemento': a,
+              'estado' : devolver,
+            },
+            dataType: 'json',
+            success: function (data) {
+            console.log("Estado");
+        console.log(data.estado);
+        var item = $("#"+data.pk);
+        var div = $("#d_"+data.pk);
+        // 1 es que se ha visto
+                if (data.estado  == 0){
+                    item.prop('checked', false);
+                    div.empty();
+                    div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR>  No se ha visitado aun <BR>");
+                }else{
+                    item.prop('checked', true);
+                    div.empty();
+                    div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR> "+data.fecha_visitado+"<BR>");
+                }
+
+                //location.reload();
+
+
+            }
+          });
+   }
+
+  function ver_detalle_(cosa){
+
+   var div = $("#detalle_"+cosa);
+   var ver = $("#ver_detalle_"+cosa);
+   var ocultar = $("#ocultar_detalle_"+cosa);
+  if (div.hasClass("d-none")){
+  div.removeClass("d-none");
+  div.addClass("d-block");
+  ver.removeClass("d-block");
+    ver.addClass("d-none");
+    ocultar.removeClass("d-none");
+      ocultar.addClass("d-block");
+
+  }else{
+   div.addClass("d-none");
+   div.removeClass("d-block");
+    ver.removeClass("d-none");
+    ver.addClass("d-block");
+    ocultar.removeClass("d-block");
+      ocultar.addClass("d-none");
+  }
+
+
+  }
+   function cambia_(a){
+      console.log(a);
+      var el = document.getElementById("item_"+a);
+      var selecc = el.checked;
+      var devolver;
+      if(selecc==true){
+        devolver=1
+      }else{
+      devolver=0
+      }
+      console.log(devolver);
+      $.ajax({
+            url: '{% url "visitar" %}',
+            data: {
+              'elemento': a,
+              'estado' : devolver,
+            },
+            dataType: 'json',
+            success: function (data) {
+            console.log("Estado");
+        console.log(data.estado);
+        var item = $("#item_"+data.pk);
+        var div = $("#detalle_"+data.pk);
+        // 1 es que se ha visto
+                if (data.estado  == 0){
+                    item.prop('checked', false);
+                    div.empty();
+                    div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR>  No se ha visitado aun <BR>");
+                }else{
+                    item.prop('checked', true);
+                    div.empty();
+                    div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR> "+data.fecha_visitado+"<BR>");
+                }
+
+                //location.reload();
+
+
+            }
+          });
+   }
+
+function recargar_pagina(){
+location.reload();
+}
+   $('.carousel').carousel('pause')
+
+
+function cambiar_vista(){
+var por_ciudad = $("#por_ciudad");
+var boton = $("#boton_vista");
+var por_dia = $("#por_dia");
+
+if (!por_ciudad.hasClass("d-none")){
+    por_ciudad.addClass("d-none");
+    por_dia.removeClass("d-none");
+    boton.html('Ver por ciudad');
+    console.log(1);
+}else{
+    por_ciudad.removeClass("d-none");
+    por_dia.addClass("d-none");
+    boton.html('Ver por dias');
+    console.log(2);
+}
+
+}
+
+  </script>
+{% endblock %}
+
+{% block contenido %}
+<div class="container-fluid">
+<!-- Viaje datos -->
+
+<!-- Ciudades del viaje -->
+{% for c in viaje.ciudades.all%}
+<div class="viaje_ciudad"> <a href="{% url 'ciudad' c.pk %}">{{c.nombre_ciudad}}</a></div>
+{%endfor%}
+
+<div class="row container-fluid" >
+<!-- Fechas viaje -->
+<div class="col-12 col-md-6 col-sm-6">
+    <div class="row">
+       <div class="col-12 col-md-6 col-sm-6">
+           <div class="text-center">Fecha inicio <i class="fa fa-calendar" style="font-size:24px"></i></div>
+           <div class="text-center">{{viaje.fecha_inicio.day}}/{{viaje.fecha_inicio.month}}/{{viaje.fecha_inicio.year}}</div>
+
+       </div>
+       <div class="col-12 col-md-6 col-sm-6">
+           <div class="text-center">Fecha fin <i class="fa fa-calendar" style="font-size:24px"></i></div>
+          <div class="text-center">{{viaje.fecha_fin.day}}/{{viaje.fecha_fin.month}}/{{viaje.fecha_fin.year}}</div>
+       </div>
+    </div>
+
+</div>
+<div class="col-12 col-md-6 col-sm-6">
+{%if viaje.planificacion%}
+    <div class="text-center">Viaje en planificacion </div>
+{% else %}
+    <div class="text-center">Viaje confirmado</div>
+
+{% endif %}
+    <div class="text-center"> <i class="fa fa-users" style="font-size:24px"></i> {{viaje.num_personas}}</div>
+{%if not viaje.planificacion %}
+    <div>
+        <div class="">
+            Personas que asistirán <br>
+
+    {% for u in viaje.usuarios.all %}
+            <div class="viaje_ciudad">{{u.username}}</div>
+    {% endfor %}
+
+            </div>
+    </div>
+
+{% endif %}
+</div>
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-6">
+        <!--Presupuesto-->
+        <div  style="text-align:center;width:100%;"> <p class="text-center h5 titulo_mis_viajes" style="width:100%;"> Presupuesto <a href="{% url 'anadir_elemento_viaje' viaje.pk %}"><i class="fa fa-plus" style="font-size:24px"></i></a> </p> </div>
+
+        <p class="text-center crusiva"><em>Total : {{viaje.coste_total}} €/persona</em></p>
+        <div>
+            {% with total=viaje.coste_total|restar:despues %}
+            <div class="row">
+                <div class="col-12 col-md-6 col-sm-6">
+                      <p class="text-center no_margin_abajo"> Pagar en el viaje</p>
+                      <p class="text-center">{{despues}} €</p>
+                </div>
+                <div class="col-12 col-md-6 col-sm-6">
+                    <p class="text-center no_margin_abajo">Pagar antes del viaje</p>
+                      <p class="text-center">{{total}} €</p>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 col-sm-6">
+
+                </div>
+                <div class="col-12 col-md-6 col-sm-6">
+                    <div class="row">
+                    <div class="col-12 col-md-6 col-sm-6">
+                          <p class="text-center no_margin_abajo">Pagado ya</p>
+                         <p class="text-center">{{antes}} €</p>
+
+                    </div>
+                    <div class="col-12 col-md-6 col-sm-6">
+                           <p class="text-center no_margin_abajo">Falta pagar</p>
+                          <p class="text-center">{{total|restar:antes}} €</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+
+       {% endwith %}
+
+        </div>
+
+            <div class="row">
+
+    {% for elemento, pago in diccionario.items %}
+            <div class="col-12 col-sm-6 borde_viajes viajes_mis_viajes padd">
+
+            {% if elemento.tipo == "Alojamiento" %}
+
+                <p > <strong>{{elemento.concepto}} <i class="fa fa-hotel" style="font-size:16px"></i></strong></p>
+
+                {%elif elemento.tipo == "Transporte"%}
+
+                <p ><strong>{{elemento.concepto}}   <i class="fa fa-plane" style="font-size:24px"></i></strong></p>
+
+                {%elif elemento.tipo == "Transporte Publico"%}
+
+                   <p ><strong>{{elemento.concepto}}  <i class="fa fa-subway text-center"  style="font-size:24px"></i></strong></p>
+
+                {%elif elemento.tipo == "Comida"%}
+                 <p >{{elemento.concepto}} </p><br>
+                {%elif elemento.tipo == "Monumento-Museo"%}
+                <div class="container-fluid" style="display:flex; align-items:center"><i class="fa fa-bank" style="font-size:24px"></i></strong></div>
+
+                  <p ><strong>{{elemento.concepto}}</strong></p>
+
+                {%elif elemento.tipo == "Otro"%}
+                  <p ><strong>{{elemento.concepto}}</strong></p><br>
+            {% endif %}
+
+                {%if elemento.inicio is not None%}
+                    <p><strong><i class="fa fa-calendar" style="font-size:24px"></i>{{elemento.inicio.day}}/{{elemento.inicio.month}}/{{elemento.inicio.year}} - {{elemento.fin.day}}/{{elemento.fin.month}}/{{elemento.fin.year}} </strong></p>
+                {%else%}
+
+                {%endif%}
+                <p ><strong class="item">Total : </strong> {{ elemento.precio}} €</p>
+
+            <p><strong class="item">Total cada uno : </strong>{{ elemento.precio|dividir:viaje.num_personas }} €</p>
+
+
+            {% if viaje.planificacion %}
+
+            {% else %}
+             <p>{% if elemento.usuario_paga == "nadie" %}Sin pagar aún{% else %}Pagado por:{{elemento.usuario_paga}} {% endif %} </p>
+                 {% if pago.estado == "Por pagar" %}
+                <div class="container-fluid" style="align-items:center; display:flex">        <button class="btn text-center centro " onclick="pagar( {{elemento.pk}} , {{pago.pk}} )">Pagar</button>
+</div>
+    {% elif pago.estado == "Pagado" %}
+        <p>Esta pagado ya, lo ha comprado {{elemento.usuario_paga}}</p>
+    {%else%}
+        <p>Has comprado ya el elemento</p>
+    {%endif%}
+            {% endif %}
+    <div class="row">
+        <div class="col-6"><a href="{% url 'editar_elemento' viaje.pk elemento.pk %}">Editar</a>  </div>
+        <div class="col-6"><a href="{% url 'viaje_elemento_delete' viaje.pk elemento.pk %}">Eliminar</a></div>
+    </div>
+
+
+
+</div>
+    {% endfor %}
+                </div>
+    </div>
+
+        <div class="col-12 col-sm-6 col-md-6">
+
+        <div  style="text-align:center;width:100%;">
+            <p class="text-center h5 titulo_mis_viajes" style="width:100%;">
+                <i class="fa fa-map" style="font-size:24px"></i>
+                Turismo
+                <a href="{% url 'anadir_cosa' viaje.pk %}"><i class="fa fa-plus" style="font-size:24px"></i></a>
+            </p>
+        </div>
+
+    <div style="justify-content:center;display:flex;margin:auto">
+    <button class="boton btn" id="boton_vista" onclick="cambiar_vista()">Ver por dias</button>
+    </div>
+        <div id="por_ciudad" class="col-12 ">
+            <br>
+            <div style="justify-content:center;display:flex;margin:auto">
+    <button class="boton btn" onclick="recargar_pagina()" style="margin:auto;">Recargar lista para reordenar elementos</button><br><br>
+    </div>
+
+{%if 6|reiniciar %}
+{%endif %}
+{% if ""|almacenar == True %}
+{% endif %}
+
+    {% for cosa in cosas %}
+      {% if cosa.ciudad|almacenar == True %}
+            {% if 6|primero %}
+                {%if 6|primero_ %}
+                {%endif %}
+            <p class="text-center h5 titulo_ciudad" style="width:100%;"><em>{{cosa.ciudad.nombre_ciudad}}</em></p>
+            <div class="row">
+
+            {% else %}
+
+                </div>
+                <p class="text-center h5 titulo_ciudad" style="width:100%;"><em>{{cosa.ciudad.nombre_ciudad}}</em></p>
+
+            <div class="row">
+
+            {% endif %}
+
+      {% endif %}
+
+            <div class="col-12 col-sm-6 borde_viajes viajes_mis_viajes padd">
+      {% if cosa.visto == True  %}
+
+
+    <input type="checkbox" checked id="{{cosa.pk}}" onchange="cambia({{cosa.pk}})"> <strong>{{cosa.nombre}}</strong><br>
+                <p class="d-block" id="vd_{{cosa.pk}}" onclick="ver_detalle({{cosa.pk}})"><em>Ver detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
+                <p class="d-none" id="od_{{cosa.pk}}" onclick="ver_detalle({{cosa.pk}})"><em>Ocultar detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
+
+ <div id="d_{{cosa.pk}}" class="d-none">
+            {{cosa.descripcion}}<BR>
+            {{cosa.fecha_a_visitar}}<BR>
+            {{cosa.fecha_visitado}}<BR>
+ </div>
+    <a href="{% url 'editar_cosa' viaje.pk cosa.pk %}">Editar</a><BR>
+    <a href="{% url 'viaje_cosaver_delete' viaje.pk cosa.pk %}">Eliminar</a><BR>
+
+
+      {% else %}
+
+                <input type="checkbox" id="{{cosa.pk}}" onchange="cambia({{cosa.pk}})"> <strong>{{cosa.nombre}}</strong><br>
+                <p class="d-block" id="vd_{{cosa.pk}}" onclick="ver_detalle({{cosa.pk}})"><em>Ver detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
+                <p class="d-none" id="od_{{cosa.pk}}" onclick="ver_detalle({{cosa.pk}})"><em>Ocultar detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
+
+            <div id="d_{{cosa.pk}}" class="d-none">
+                <p><em>{{cosa.descripcion}}</em></p>
+
+                <p><strong class="item">Fecha a visitar:</strong> {{cosa.fecha_a_visitar}}</p>
+            <p><strong class="item">Fecha a visitado:</strong> {{cosa.fecha_visitado}}</p>
+
+            </div>
+                <div class="row">
+                    <div class="col-6"><a href="{% url 'editar_cosa' viaje.pk cosa.pk %}">Editar</a></div>
+                    <div class="col-6"><a href="{% url 'viaje_cosaver_delete' viaje.pk cosa.pk %}">Eliminar</a></div>
+                </div>
+
+
+      {% endif %}
+                </div>
+
+    {% endfor %}
+
+    </div>
+        </div>
+
+       <div id="por_dia" class="col-12 d-none">
+        {% for key , value in cosas_fecha.items %}
+
+        <div class="container-fluid">
+            Día {{key.day}}/{{key.month}}/{{key.year}}
+        </div>
+        <div class="row">
+            {% for cosa in value %}
+                  <div class="col-12 col-sm-6 borde_viajes viajes_mis_viajes padd">
+      {% if cosa.visto == True  %}
+
+
+    <input type="checkbox" checked id="item_{{cosa.pk}}" onchange="cambia_({{cosa.pk}})"> <strong>{{cosa.nombre}}</strong> <em>({{cosa.ciudad.nombre_ciudad}})</em><br>
+                <p class="d-block" id="ver_detalle_{{cosa.pk}}" onclick="ver_detalle_({{cosa.pk}})"><em>Ver detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
+                <p class="d-none" id="ocultar_detalle_{{cosa.pk}}" onclick="ver_detalle_({{cosa.pk}})"><em>Ocultar detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
+
+ <div id="detalle_{{cosa.pk}}" class="d-none">
+            {{cosa.descripcion}}<BR>
+            {{cosa.fecha_a_visitar}}<BR>
+            {{cosa.fecha_visitado}}<BR>
+ </div>
+    <div class="row">
+                    <div class="col-6"><a href="{% url 'editar_cosa' viaje.pk cosa.pk %}">Editar</a></div>
+                    <div class="col-6"><a href="{% url 'viaje_cosaver_delete' viaje.pk cosa.pk %}">Eliminar</a></div>
+                </div>
+
+
+      {% else %}
+
+                <input type="checkbox" id="item_{{cosa.pk}}" onchange="cambia_({{cosa.pk}})"> <strong>{{cosa.nombre}}</strong><br>
+                <p class="d-block" id="ver_detalle_{{cosa.pk}}" onclick="ver_detalle_({{cosa.pk}})"><em>Ver detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
+                <p class="d-none" id="ocultar_detalle_{{cosa.pk}}" onclick="ver_detalle_({{cosa.pk}})"><em>Ocultar detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
+
+            <div id="detalle_{{cosa.pk}}" class="d-none">
+                <p><em>{{cosa.descripcion}}</em></p>
+
+                <p><strong class="item">Fecha a visitar:</strong> {{cosa.fecha_a_visitar}}</p>
+            <p><strong class="item">Fecha a visitado:</strong> {{cosa.fecha_visitado}}</p>
+
+            </div>
+                <div class="row">
+                    <div class="col-6"><a href="{% url 'editar_cosa' viaje.pk cosa.pk %}">Editar</a></div>
+                    <div class="col-6"><a href="{% url 'viaje_cosaver_delete' viaje.pk cosa.pk %}">Eliminar</a></div>
+                </div>
+
+
+      {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+        </div>
+
+
+
+<div class="col-12 col-sm-12 col-md-12">
+    <h3><strong>Fotos:</strong></h3>
+
+    <a href="{% url 'viaje_foto' viaje.pk %}">Añadir foto</a>
+    </div>
+
+{% for foto in fotos %}
+
+  <img src="{{foto.imagen.url}}" alt="..." style="height:200px;">
+
+    <h5>{{foto.nombre_usuario}}</h5>
+    <p>{{foto.monumento}}</p>
+      <a href="{% url 'viaje_foto_delete' viaje.pk foto.pk %}">Eliminar foto</a>
+{% endfor %}
+
+
+
+<div class="container-fluid">
+  <div id="mapas">
+
+
+  </div>
+</div>
+
+<div id="p"></div>
+
+</div>
+    </div>
+{% endblock %}

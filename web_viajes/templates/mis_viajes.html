@@ -1,0 +1,117 @@
+{% extends "_base.html" %}
+
+{% load filtros  %}
+{% load staticfiles %}
+
+{%block titulo%}
+    <title>Mis Viajes</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+{% endblock %}
+
+{% block nombre %}Mis Viajes{% endblock %}
+
+{% block scripts %}
+<script>
+viajes_antiguos = 0;
+    function a(){
+    if(viajes_antiguos ==0){
+        viajes_antiguos = 1;
+        $("#antiguos").html("Ocultar viajes");
+        $("#viajes_antiguos_bloque").removeClass(" d-none")
+    }else{
+      viajes_antiguos = 0;
+        $("#antiguos").html("Mostrar viajes");
+        $("#viajes_antiguos_bloque").addClass("d-none")
+    }
+    }
+</script>
+{% endblock %}
+
+{% block contenido %}
+<div class="container-fluid">
+
+
+    <a  href="{% url 'anadir_viaje' %}"><p class="text-center">Añadir un nuevo viaje  <i class="fa fa-plus" ></i></p></a>
+
+    <div class="row">
+    <div class="col-12 col-sm-8">
+    <div class="col-8">
+        <p class="h5 titulo_mis_viajes"> Proximos viajes </p>
+
+    </div>
+        <div class="row container-fluid">
+            {% for viaje in viajes_siguientes%}
+
+                <div class="col-12 col-sm-6 borde_viajes viajes_mis_viajes fondo">
+                    <strong >{{viaje.nombre}}</strong>
+                    <p><strong class="item">Fecha inicio:</strong> {{viaje.fecha_inicio.day}}-{{viaje.fecha_inicio.month}}-{{viaje.fecha_inicio.year}}</p>
+                    <p><strong class="item">Fecha fin:</strong> {{viaje.fecha_fin.day}}-{{viaje.fecha_fin.month}}-{{viaje.fecha_fin.year}}</p>
+                    <p><i class="fa fa-money item"></i> {{viaje.coste_total}} €</p>
+
+                    {% if viaje.fecha_inicio|en_curso:viaje.fecha_fin %}
+                    <p> En curso </p>
+                    {% else %}
+                    <p> <i class="fa fa-hourglass-2 item" style="font-size:24px"></i> {{ viaje.fecha_inicio|dias_restantes }} dias</p>
+
+                    {%endif%}
+                    <a href="{% url 'viaje' viaje.pk %}">Detalle</a>
+                    {% if viaje.usuario_creador.username == user.get_username %}<a href="{% url 'viaje_delete' viaje.pk %}">Eliminar</a>{% endif %}
+                </div>
+
+            {%endfor%}
+</div>
+
+            <div class="col-8"> <p class="h5 titulo_mis_viajes"> Viajes realizados </p><button class=" btn boton" id="antiguos" onclick="a()">Mostar viajes</button></div>
+<div class="row d-none container-fluid" id="viajes_antiguos_bloque">
+            {% for viaje in viajes_antiguos%}
+
+                <div class="col-12 col-sm-6 borde_viajes viajes_mis_viajes">
+                    <strong>{{viaje.nombre}}</strong>
+                    <p><strong class="item">Fecha inicio:</strong> {{viaje.fecha_inicio.day}}-{{viaje.fecha_inicio.month}}-{{viaje.fecha_inicio.year}}</p>
+                    <p><strong class="item">Fecha fin:</strong> {{viaje.fecha_fin.day}}-{{viaje.fecha_fin.month}}-{{viaje.fecha_fin.year}}</p>
+
+                    <a href="{% url 'viaje' viaje.pk %}">Detalle</a>
+
+                </div>
+
+            {%endfor%}
+</div>
+        <div class="col-8"> <p class="h5 titulo_mis_viajes"> Valoraciones pendientes </p> </div>
+        <div class="row container-fluid">
+
+
+    {% for valoracion in valoraciones_pendientes%}
+
+
+             <div class="col-12 col-sm-6 borde_viajes">
+                 <div style="display:flex;align-items:center;"><strong style="display:flex;align-items:center;"><i class="material-icons">location_city</i> {{valoracion.0.nombre_ciudad}} </strong></div>
+                 <p><strong class="item"> Fecha visita: </strong> {{valoracion.1.day}}/{{valoracion.1.month}}/{{valoracion.1.year}} - {{valoracion.2.day}}/{{valoracion.2.month}}/{{valoracion.2.year}}</p>
+                        <p>  Hace {{valoracion.2|dias_restantes }} dias</p>
+                <p><a href="{% url 'ciudad_valorar' valoracion.0.pk %}">Valorar ciudad</a></p>
+             </div>
+
+    {%endfor%}
+        </div>
+
+</div>
+
+        <div class="col-12 col-sm-4">
+            <p class="h5 text-center titulo_mis_viajes"> Top ciudades <i class="fa fa-trophy" style="font-size:24px"></i></p>
+
+            {% for  ciudad in top_ciudades %}
+            <div class="row container-fluid">
+                <div class="col borde_ciudades">
+                    <p class="h4 text-center">{{ forloop.counter }} º</p>
+
+                    <p class="h5 text-center"> {{ ciudad.nombre_ciudad }}</p>
+                    <p class="text-center"><em>({{ciudad.nombre_pais}})</em></p>
+                    <p class=" text-center">{{ ciudad.nota }}  <i class="fa fa-star-o" style="font-size:24px"></i></p>
+                    <p class=" text-center"><em>{{ ciudad.num_valoraciones }} valoraciones</em></p>
+                 <p class="text-center"><a class="text-center" href="{%url 'ciudad' ciudad.pk %}" style="text-align:center">Ver ciudad</a></p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+</div>
+{% endblock %}

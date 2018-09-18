@@ -1,0 +1,22 @@
+{% extends "_base.html" %}
+{% load filtros  %}
+{% load staticfiles %}
+
+{% block titulo %}
+    <title>Eliminar Elemento Presupuesto</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+{% endblock %}
+
+{% block nombre %}Eliminar Elemento Presupuesto{% endblock %}
+
+{% block contenido %}
+	<p style="text-align: center;">¿Estás seguro de eliminar este elemento del presupuesto: {{ elementopresupuesto.concepto }}?</p>
+
+	<form align="middle" action="" method="POST">
+	  {% csrf_token %}
+	  <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+          <button type="submit" class="btn btn-primary " style="margin:auto;">Sí, eliminar</button>
+      </div>
+	</form>
+{% endblock %}

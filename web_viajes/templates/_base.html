@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% block titulo %}
+    <title>Predeterminado</title>
+    {% endblock %}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> 
+</head>
+<body>
+    {% load widget_tweaks %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'inicio' %}">GestionaTusViajes</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#barra" aria-controls="barra" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="barra">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'inicio' %}">Inicio</a>
+          </li>
+          {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'mis_viajes' %}">Mis Viajes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'perfil' user.pk %}">Perfil</a>
+              </li>
+          {% endif %}
+        </ul>
+        <ul class="nav navbar-nav float-md-right">
+            {% if user.is_authenticated %}
+              <li><a><i class="fas fa-user"></i>&nbsp {{user.get_username}} &nbsp &nbsp &nbsp</a></li>
+              <li><a href="{% url 'logout' %}"><i class="fas fa-user-minus"></i>&nbsp Abandonar Sesión</a></li>
+            {% else %}
+              <li><a href="{% url 'registro' %}"><i class="fas fa-user-plus"></i>&nbsp Registrar</a> &nbsp &nbsp &nbsp</li>
+              <li></li>
+              <li><a href="{% url 'login' %}"><i class="fas fa-user"></i>&nbsp Iniciar Sesión</a></li>
+            {% endif %}
+        </ul>
+      </div>
+    </nav> 
+
+    <h1 style="color: #004085; margin-top:2%; margin-bottom:2%; text-align: center;">{% block nombre %}Predeterminado{% endblock%}</h1>
+
+    {% block contenido %}
+    <div class="container-fluid">
+        <form method="post" action="" id="form"> 
+          {% csrf_token %}
+
+          {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+          {% endfor %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% for field in form.visible_fields %}
+            <div class="form-group mt-3 justify-content-center">
+                <div class="row  col-12 col-md-8 " style="margin:auto">
+                    <div class="col-12 col-sm-4 col-md-4">
+                    <strong>{{ field.label_tag }}</strong>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                    <!--<div class="col-xs-3 ml-3 ">-->
+                      {% if form.is_bound %}
+                        {% if field.errors %}
+                          {% render_field field class="form-control is-invalid" %}
+                          {% for error in field.errors %}
+                            <div class="invalid-feedback">
+                              {{ error }}
+                            </div>
+                          {% endfor %}
+                        {% else %}
+                          {% render_field field class="form-control is-valid" %}
+                        {% endif %}
+                      {% else %}
+                        {% render_field field class="form-control" %}
+                      {% endif %}
+                    </div>
+                </div>
+
+              {% if field.help_text %}
+                <small class="form-text text-muted text-center">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+          {% endfor %}
+            {% block extra %}
+            {% endblock %}
+          <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
+            <button type="submit" class="btn" style="margin:auto; background-color:#F7715D">{% block boton %}Predeterminado{% endblock %}</button>
+          </div>
+        </form>
+    </div>
+    {% endblock %}
+</body>
+{% block scripts %}
+{% endblock %}
+</html>

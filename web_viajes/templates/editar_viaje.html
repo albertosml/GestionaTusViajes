@@ -1,0 +1,258 @@
+{% extends "_base.html" %}
+{% load filtros  %}
+{% load staticfiles %}
+
+{% block titulo %}
+    <title>Editar Viaje</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+{% endblock %}
+
+{% block nombre %}Viaje{% endblock %}
+{% block extra %}
+Ciudades del viaje: <i class="fa fa-edit" style="font-size:24px" onclick="abrir_ciudades()">abirir</i>
+    {%for c in object.ciudades.all%}
+    <div><p id="c_{{c.pk}}">{{c.nombre_ciudad}}</p><div id="d_{{c.pk}}" onclick="eliminar_ciudad({{c.pk}})">Eliminar ciudad del viaje</div></div>
+    {%endfor%}
+<div id="ciudades_cambiar" class="d-none">
+    <strong>Ciudades:</strong>
+
+    <div class="col-8">
+        <input class="form-control" type="text" style="border-color: orange;" id="buscador_ciudades">
+    </div>
+
+
+    <div class="col-12 col-md-8 " style="margin:auto; ">
+    + Ciudades a añadir al viaje
+    </div>
+    <div id="ciudades_anadidas" style="margin:auto;text-align:center;">
+
+    </div>
+    <div class="col-12 col-md-8 " style="margin:auto; ">
+    + Todas las ciudades
+    </div>
+    <div id="ciudades_anadir" class="col-12 col-md-8 " style="margin:auto;text-align:center; max-height:30px; scroll-y:true">
+
+    </div>
+    <br>
+</div>
+Usuarios del viaje: <i class="fa fa-edit" style="font-size:24px" onclick="abrir_usuarios()"></i>
+    {% for u in object.usuarios.all%}
+    <div>
+        <p id="u_{{c.pk}}">{{u.username}}</p>
+        {%if u.username != user.get_username %}
+        <div id="du_{{u.pk}}" onclick="eliminar_usuario({{u.pk}})">Eliminar usuario del viaje</div>
+        {%endif %}
+    </div>
+    {%endfor%}
+<div id="usuarios_cambiar" class="d-none">
+    <strong>Usuarios:</strong>
+
+    <div class="col-8">
+        <input class="form-control" type="text" style="border-color: orange;" id="buscador_usuarios">
+    </div>
+
+
+    <div class="col-12 col-md-8 " style="margin:auto; ">
+    + Usuarios por añadir al viaje
+    </div>
+    <div id="usuarios_anadidos" class="col-6  col-sm-12" style="margin:auto; text-align:center;">
+
+    </div>
+    <div class="col-12 col-md-8 "  style="margin:auto; ">
+    + Total usuarios
+    </div>
+    <div id="usuarios" class="col-12 col-md-8 " style="margin:auto;text-align:center;">
+
+    </div>
+    <br>
+</div>
+{% endblock %}
+
+{% block boton %}Editar{% endblock %}
+
+{% block scripts %}
+<script>
+var ciudades_a_eliminar = new Set();
+var usuarios_a_eliminar = new Set();
+
+var ciudades_abiertas = false;
+var usuarios_abiertos = false;
+
+var usuarios_a_anadir= new Set();
+var ciudades_a_anadir= new Set();
+
+
+function abrir_usuarios(){
+    if(!usuarios_abiertos){
+        $("#usuarios_cambiar").removeClass("d-none");
+        usuarios_abiertos = true
+    }else{
+     $("#usuarios_cambiar").addClass("d-none");
+        usuarios_abiertos = false
+    }
+}
+function abrir_ciudades(){
+    if(!ciudades_abiertas){
+        $("#ciudades_cambiar").removeClass("d-none");
+        ciudades_abiertas = true
+    }else{
+     $("#ciudades_cambiar").addClass("d-none");
+        ciudades_abiertas = false
+    }
+}
+function eliminar_ciudad(ciudad){
+    $("#c_"+ciudad).remove();
+    $("#d_"+ciudad).remove();
+    ciudades_a_eliminar.add(ciudad);
+}
+function eliminar_usuario(usuario){
+    $("#u_"+usuario).remove();
+    $("#du_"+usuario).remove();
+    usuarios_a_eliminar.add(usuario);
+}
+
+function anadir(user){
+    console.log(user.innerHTML);
+    console.log(user)
+    var c = confirm("¿Quieres añadir al usuario "+user.innerHTML+" al viaje?");
+    if(c){
+        $("#usuarios_anadidos").append("<p id='user'> "+user.innerHTML+" </p>");
+    usuarios_a_anadir.add(user.innerHTML);
+
+    }else{
+    alert("No se ha añadido al viaje");
+    }
+}
+function anadir_ciudad(ciudad){
+    console.log(ciudad.innerHTML);
+    ciudades_a_anadir.add(ciudad.innerHTML);
+    console.log(ciudad)
+    $("#ciudades_anadidas").append("<p id='ciudad'> "+ciudad.innerHTML+" </p>");
+}
+
+//buscador de ciudades
+$('#buscador_ciudades').on('keyup',function(e){
+e.preventDefault();
+console.log($(this).serialize())
+$("#ciudades_anadir").empty();
+   $.ajax({
+        url: '{% url "buscador_ciudades" %}',
+        dataType: 'json',
+        data : {
+        'datos' : $(this).serialize(),
+        'ciudad' : $("#buscador_ciudades").val(),
+        },
+        success: function (data) {
+
+            var ciudades = data.ciudades;
+            console.log(ciudades)
+            for(us in ciudades){
+                var user = ciudades[us];
+                $("#ciudades_anadir").append("<p id="+user+" onclick=anadir_ciudad("+user+")>"+user+"</p>");
+            }
+        }
+   });
+});
+
+//buscador de usuarios
+$('#buscador_usuarios').on('keyup',function(e){
+e.preventDefault();
+console.log($(this).serialize())
+$("#usuarios").empty();
+   $.ajax({
+        url: '{% url "buscador_usuarios" %}',
+        dataType: 'json',
+        data : {
+        'datos' : $(this).serialize(),
+        'usuario' : $("#buscador_usuarios").val(),
+        },
+        success: function (data) {
+
+            var usuarios = data.usuarios;
+            console.log(usuarios)
+            for(us in usuarios){
+                var user = usuarios[us];
+                $("#usuarios").append("<p id="+user+" onclick=anadir("+user+")>"+user+"</p>");
+             }
+        }
+   });
+});
+
+//cargar el formulario
+$('#form').on('submit',function(e){
+alert("se esta enviando");
+e.preventDefault();
+console.log($(this).serialize())
+                    us = Array.from(usuarios_a_anadir);
+                    ciud = Array.from(ciudades_a_anadir);
+                    console.log(us);
+                    console.log(ciud);
+                    var cadenaC = "";
+                    for(c in ciud){
+                    cadenaC+=ciud[c]+",";
+                    }
+                    var cadenaU = "";
+                    for(u in us){
+                    cadenaU+=us[u]+",";
+                    }
+                    console.log(cadenaC);
+                    console.log(cadenaU);
+
+                    //para las cosas a eliminar
+                    var us_e = Array.from(usuarios_a_eliminar);
+                    var ciud_e = Array.from(ciudades_a_eliminar);
+                    console.log(us_e);
+                    console.log(ciud_e);
+                    var cadenaC_e = "";
+                    for(c in ciud_e){
+                    cadenaC_e+=ciud_e[c]+",";
+                    }
+                    var cadenaU_e = "";
+                    for(u in us_e){
+                    cadenaU_e+=us_e[u]+",";
+                    }
+                    console.log(cadenaC_e);
+                    console.log(cadenaU_e);
+            var pk = {{object.pk}};
+            console.log(pk);
+            var planificacion = $("#id_planificacion").prop('checked');
+            console.log("Planificacion");
+            console.log(planificacion);
+            if(!planificacion){
+                planificacion = "False";
+            }else{
+                planificacion = "True";
+            }
+      $.ajax({
+            url: '{% url "editar_viaje" %}',
+            dataType: 'json',
+            data : {
+            'pk' : pk,
+            'nombre' : $("#id_nombre").val(),
+            'fecha_inicio' : $("#id_fecha_inicio").val(),
+            'fecha_fin':$("#id_fecha_fin").val(),
+            'coste_total' : $("#id_coste_total").val(),
+            'planificacion' : planificacion,
+            'ciudades_eliminar' : cadenaC_e,
+            'ciudades_anadir' : cadenaC,
+            'usuarios_eliminar' : cadenaU_e,
+            'usuarios_anadir' : cadenaU,
+            'num_personas' : $("#id_num_personas").val(),
+
+            },
+
+            success: function (data) {
+            console.log(data);
+                if(data){
+                    alert("se han editado correctamente los valores del viaje")
+                    $(location).attr('href','{% url 'viaje' object.pk %}');
+
+                 }
+            }
+       });
+});
+
+
+</script>
+{% endblock %}
