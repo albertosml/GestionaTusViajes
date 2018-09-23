@@ -260,6 +260,8 @@ def add_city(request):
 
 @csrf_protect
 def add_valoration(request,pk):
+    ciudad = Ciudad.objects.get(pk=pk)
+
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request (binding):
@@ -267,7 +269,6 @@ def add_valoration(request,pk):
 
         # Check if the form is valid:
         if form.is_valid():
-            ciudad = Ciudad.objects.get(pk=pk)
             if request.user.is_authenticated:
                 usuario = User.objects.get(username=request.user.username)
             else:
@@ -293,7 +294,7 @@ def add_valoration(request,pk):
 
         items = Item_Valoracion.objects.all()
 
-    return render(request, 'valoracion_anadir.html', {'form': form, 'items' : items , 'ciudad' : pk})
+    return render(request, 'valoracion_anadir.html', {'form': form, 'items' : items , 'ciudad' : pk, 'city' : ciudad})
 
 def add_entrada(request,pk):
     if request.method == 'POST':

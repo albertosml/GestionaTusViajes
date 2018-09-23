@@ -7,12 +7,9 @@ from django.contrib.auth.models import User
 
 class Pais(models.Model):
     nombre_pais = models.CharField(max_length=20,primary_key=True)
-    continente = models.CharField(
-        choices={('Europa', 'Europa'), ('Asia', 'Asia'), ('Africa', 'Africa'), ('America', 'America'),
-                 ('Oceania', 'Oceania')}, null=False, max_length=20, default='Europa')
 
     def __str__(self):
-       return '{0}, {1}'.format(self.nombre_pais, self.continente)
+       return self.nombre_pais
 
 class Ciudad(models.Model):
     nombre_ciudad = models.CharField(max_length=20)

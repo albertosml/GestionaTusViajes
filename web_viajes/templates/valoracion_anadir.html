@@ -4,12 +4,12 @@
 {% load staticfiles %}
 
 {%block titulo%}
-    <title>Añadir Valoración</title>
+    <title>Valorar {{city.nombre_ciudad}}</title>
   <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 
 {% endblock %}
 
-{% block nombre %}Añadir Valoración{% endblock %}
+{% block nombre %}Valorar {{city.nombre_ciudad}}{% endblock %}
 
 {% block contenido%}
   {% load widget_tweaks %}

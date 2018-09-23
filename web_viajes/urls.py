@@ -9,7 +9,6 @@ urlpatterns = [
     path('ciudad/<int:pk>',views.city,name="ciudad"),
     path('viaje/<int:pk>/',views.travel ,name="viaje"),
     path('perfil/<int:pk>',views.update_user,name='perfil'),
-    path('perfil/<int:pk>',views.update_user,name='perfil'),
     path('registro/',views.create_user,name='registro'),
 
     ##formulario
