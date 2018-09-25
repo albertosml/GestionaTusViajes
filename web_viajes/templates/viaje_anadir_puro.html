@@ -151,7 +151,7 @@ function anadir_ciudad(ciudad){
 //cargar el formulario
 $('#form').on('submit',function(e){
 
-alert("se esta enviando");
+
 e.preventDefault();
 
 console.log($(this).serialize())
@@ -161,11 +161,11 @@ console.log($(this).serialize())
             data : $(this).serialize(),
             type : "POST",
             success: function (data) {
-            alert("Se ha añadido el viaje ya ");
+
             console.log(data);
 
                 if(data){
-                    alert("entra a enviar a la gente y eso")
+
                     us = Array.from(usuarios_a_anadir);
                     ciud = Array.from(ciudades_a_anadir);
                     console.log(us);
@@ -188,7 +188,7 @@ console.log($(this).serialize())
                     console.log("primero")
                     console.log(variable);
 
-                     alert("Se ha añadido el elemento, ahora se van a cargar los usuarios");
+
                     $.ajax({
                             url: '{% url "anadir_usuarios_viaje" %}',
                             dataType: 'json',
@@ -201,7 +201,6 @@ console.log($(this).serialize())
 
                             }
                        });
-                    alert("Se ha añadido el elemento, ahora se van a cargar las ciudades");
                     viaje = data.pk;
                     $.ajax({
                             url: '{% url "anadir_ciudades_viaje" %}',

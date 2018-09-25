@@ -97,7 +97,14 @@ a:active {
 
 .boton{
 background-color : orange;
-color:white;
+color:white !important;
+}
+.boton a{
+color:white !important;
+}
+.boton a:hover {
+    text-decoration: none!important;
+    color:white !important;
 }
 .boton hover{
 background-color: blue !important;
