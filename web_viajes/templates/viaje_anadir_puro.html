@@ -101,7 +101,7 @@
              <p>En esta aplicacion no están todas las ciudades del mundo, son los usuarios los que las van introduciendo a medida
                     que estas vayan siendo visitadas. Para añadir una ciudad que no está, haga click en la enlace siguiente. <strong>Importante:</strong>
                     Añade la ciudad con su nombre completo en <strong>español</strong>. Si tiene alguna falta de ortografía o similar
-                    , esta ciudad no será visible para posteriormente poder valorarla.</p>
+                    , esta ciudad no será visible para posteriormente poder valorarla. Además, no se deberán incluir las tildes <strong>´</strong>.</p>
                     <p align="middle"><a  target="_blank" href="{% url 'anadir_ciudad' %}">Añadir ciudad</a></p>
                 <div class="row">
                 <div class="col-6 col-md-6 ">
@@ -187,7 +187,7 @@ console.log($(this).serialize())
                     console.log(cadenaU);
                     console.log("primero")
                     console.log(variable);
-
+                    alert("Se van a enviar los usuarios del viaje");
 
                     $.ajax({
                             url: '{% url "anadir_usuarios_viaje" %}',
@@ -201,6 +201,7 @@ console.log($(this).serialize())
 
                             }
                        });
+                       alert("Se van a enviar las ciudades del viaje");
                     viaje = data.pk;
                     $.ajax({
                             url: '{% url "anadir_ciudades_viaje" %}',

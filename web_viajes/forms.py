@@ -39,7 +39,7 @@ class AnadirCiudad(forms.ModelForm):
 
     def clean_nombre_ciudad(self):
         ciudad = self.cleaned_data["nombre_ciudad"]
-        return ciudad.upper()
+        return ciudad
 
 
 class AnadirValoracion(forms.ModelForm):

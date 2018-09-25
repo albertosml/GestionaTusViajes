@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f920f51-a917-41a1-8108-0c8225f3ac8f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/web_viajes/static/css/estilos.css" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/static/css/estilos.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/_base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/foto_anadir.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/foto_anadir.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/mis_viajes.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/mis_viajes.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/valoracion_anadir.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/valoracion_anadir.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/viaje_anadir.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/viaje_anadir.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_viajes/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/viaje_elemento_anadir_V2.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/viaje_elemento_anadir_V2.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,29 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ciudad.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/ciudad.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1700">
-              <caret line="100" column="14" lean-forward="true" selection-start-line="100" selection-start-column="14" selection-end-line="100" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="viaje_anadir.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="65" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="viaje_anadir_puro.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="viaje_anadir_puro.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="124" column="6" lean-forward="true" selection-start-line="124" selection-start-column="6" selection-end-line="126" selection-end-column="14" />
+            <state relative-caret-position="243">
+              <caret line="264" column="34" lean-forward="true" selection-start-line="264" selection-start-column="34" selection-end-line="264" selection-end-column="34" />
               <folding>
                 <element signature="n#style#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
               </folding>
@@ -51,67 +28,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/index.html">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web_viajes/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="45" column="64" selection-start-line="45" selection-start-column="59" selection-end-line="45" selection-end-column="64" />
+            <state relative-caret-position="274">
+              <caret line="41" column="51" selection-start-line="41" selection-start-column="41" selection-end-line="41" selection-end-column="62" />
               <folding>
-                <element signature="e#1490#1545#0" expanded="true" />
-                <element signature="e#1620#1640#0" expanded="true" />
+                <element signature="e#0#28#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="estilos.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/static/css/estilos.css">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web_viajes/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="106" column="27" lean-forward="true" selection-start-line="106" selection-start-column="27" selection-end-line="106" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mis_viajes.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/mis_viajes.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="107" column="82" selection-start-line="107" selection-start-column="82" selection-end-line="107" selection-end-column="82" />
+            <state relative-caret-position="-181">
+              <caret line="750" column="4" selection-start-line="750" selection-start-column="4" selection-end-line="750" selection-end-column="4" />
               <folding>
-                <element signature="n#style#0;n#i#0;n#p#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#i#0;n#p#3;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ciudad_anadir.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/ciudad_anadir.html">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="foto_anadir.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/foto_anadir.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="49" column="50" selection-start-line="49" selection-start-column="50" selection-end-line="49" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="entrada_anadir.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/entrada_anadir.html">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="_base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/_base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1836">
-              <caret line="108" column="15" lean-forward="true" selection-start-line="108" selection-start-column="15" selection-end-line="108" selection-end-column="15" />
-              <folding>
-                <element signature="n#style#0;n#button#0;n#div#2;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="e#0#40#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -123,6 +58,10 @@
     <findStrings>
       <find>alert</find>
       <find>boton</find>
+      <find>anadir_ciudad</find>
+      <find>add_ci</find>
+      <find>usuarios</find>
+      <find>anadir_usuarios_viaje</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -131,7 +70,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html" />
         <option value="$PROJECT_DIR$/web_viajes/templates/viaje_elemento_anadir_V2.html" />
         <option value="$PROJECT_DIR$/web_viajes/templates/viaje_anadir.html" />
         <option value="$PROJECT_DIR$/web_viajes/templates/valoracion_anadir.html" />
@@ -140,6 +78,8 @@
         <option value="$PROJECT_DIR$/web_viajes/templates/_base.html" />
         <option value="$PROJECT_DIR$/web_viajes/static/css/estilos.css" />
         <option value="$PROJECT_DIR$/web_viajes/templates/mis_viajes.html" />
+        <option value="$PROJECT_DIR$/web_viajes/forms.py" />
+        <option value="$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html" />
       </list>
     </option>
   </component>
@@ -154,6 +94,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -170,26 +111,12 @@
               <item name="GestionaTusViajes" type="b2602c69:ProjectViewProjectNode" />
               <item name="GestionaTusViajes" type="462c0819:PsiDirectoryNode" />
               <item name="web_viajes" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="GestionaTusViajes" type="b2602c69:ProjectViewProjectNode" />
-              <item name="GestionaTusViajes" type="462c0819:PsiDirectoryNode" />
-              <item name="web_viajes" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="GestionaTusViajes" type="b2602c69:ProjectViewProjectNode" />
-              <item name="GestionaTusViajes" type="462c0819:PsiDirectoryNode" />
-              <item name="web_viajes" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -227,21 +154,21 @@
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Python Console" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.32943678" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32943678" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -262,66 +189,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/registrar.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/eliminar_elementopresupuesto.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/eliminar_foto.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/cosasporver_form.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="124" column="6" lean-forward="true" selection-start-line="124" selection-start-column="6" selection-end-line="126" selection-end-column="14" />
-          <folding>
-            <element signature="n#style#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/foto_anadir.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="49" column="50" selection-start-line="49" selection-start-column="50" selection-end-line="49" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/entrada_anadir.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="45" column="64" selection-start-line="45" selection-start-column="59" selection-end-line="45" selection-end-column="64" />
-          <folding>
-            <element signature="e#1490#1545#0" expanded="true" />
-            <element signature="e#1620#1640#0" expanded="true" />
-          </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/ciudad_anadir.html">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="108" column="15" lean-forward="true" selection-start-line="108" selection-start-column="15" selection-end-line="108" selection-end-column="15" />
-          <folding>
-            <element signature="n#style#0;n#button#0;n#div#2;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -343,9 +221,65 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
           <caret line="107" column="82" selection-start-line="107" selection-start-column="82" selection-end-line="107" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/foto_anadir.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="49" column="50" selection-start-line="49" selection-start-column="50" selection-end-line="49" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1836">
+          <caret line="108" column="15" lean-forward="true" selection-start-line="108" selection-start-column="15" selection-end-line="108" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
           <folding>
-            <element signature="n#style#0;n#i#0;n#p#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#p#3;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/ciudad_anadir.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-181">
+          <caret line="750" column="4" selection-start-line="750" selection-start-column="4" selection-end-line="750" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="41" column="51" selection-start-line="41" selection-start-column="41" selection-end-line="41" selection-end-column="62" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="264" column="34" lean-forward="true" selection-start-line="264" selection-start-column="34" selection-end-line="264" selection-end-column="34" />
+          <folding>
+            <element signature="n#style#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
