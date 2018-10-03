@@ -62,8 +62,11 @@
                     <div class="col-4">
                     <strong>Usuarios:</strong>
                         </div>
-                    <div class="col-8">
+                    <div class="col-6">
                         <input class="form-control" type="text" style="border-color: orange;" id="buscador_usuarios">
+                    </div>
+                       <div class="col-2">
+                         <button id="usuarios_btn" class="btn ">Buscar usuarios</button>
                     </div>
                 </div>
             </div>
@@ -92,8 +95,11 @@
                     <div class="col-4">
                     <strong>Ciudades:</strong>
                     </div>
-                    <div class="col-8">
+                    <div class="col-6">
                         <input class="form-control" type="text" style="border-color: orange;" id="buscador_ciudades">
+                    </div>
+                      <div class="col-2">
+                        <button id="ciudades_btn" class="btn ">Buscar ciudades</button>
                     </div>
                 </div>
             </div>
@@ -226,7 +232,7 @@ console.log($(this).serialize())
 
 
 //buscador de usuarios
-$('#buscador_usuarios').on('keyup',function(e){
+$('#usuarios_btn').on('click',function(e){
 e.preventDefault();
 console.log($(this).serialize())
 $("#usuarios").empty();
@@ -251,7 +257,7 @@ $("#usuarios").empty();
 });
 
 //buscador de ciudades
-$('#buscador_ciudades').on('keyup',function(e){
+$('#ciudades_btn').on('click',function(e){
 e.preventDefault();
 console.log($(this).serialize())
 $("#ciudades_anadir").empty();

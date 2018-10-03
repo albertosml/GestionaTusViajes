@@ -732,7 +732,7 @@ def buscar_usuarios(request):
 
 def buscar_ciudades(request):
     nueva_lista = list()
-    ciudad = request.GET.get('ciudad', None)
+    ciudad = request.GET.get('ciudad', None).title()
 
     ciudades = Ciudad.objects.filter(nombre_ciudad__contains=(ciudad))
 
