@@ -1210,3 +1210,13 @@ def editar_elemento(request):
     }
 
     return JsonResponse(data)
+
+def eliminar_elemento_presupuesto(request,idViaje,pkElemento):
+    viaje = Viaje.objects.get(pk=idViaje)
+    elemento = ElementoPresupuesto.objects.get(pk=pkElemento)
+    viaje.coste_total = viaje.coste_total - (elemento.concepto/viaje.num_personas)
+    viaje.save()
+    pagos = PagoUsuario.objects.filter(idElementoPresupuesto=elemento)
+    for pago in pagos:
+        pago.delete()
+    elemento.delete()

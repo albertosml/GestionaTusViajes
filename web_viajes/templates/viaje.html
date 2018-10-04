@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
   integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
   crossorigin=""/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 {% endblock %}
 
 {% block nombre %}{{viaje.nombre}}
@@ -324,6 +325,82 @@ if (!por_ciudad.hasClass("d-none")){
 }
 
   </script>
+<script>
+function dynamicColors(){
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            return "rgb(" + r + "," + g + "," + b + ")";
+         };
+var datos=[];
+var colores=[];
+var campos=[];
+ {% for elemento, pago in diccionario.items %}
+ campos.push("{{elemento.concepto}}");
+ colores.push(dynamicColors());
+ datos.push({{elemento.precio}}/{{viaje.num_personas}})
+ {% endfor %}
+
+
+data = {
+    datasets: [{
+        data: datos,
+        backgroundColor: colores
+    }],
+    labels: campos
+
+};
+var ctx = document.getElementById("myChart");
+var myDoughnutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: data,
+    options: {}
+});
+</script>
+<script>
+    function eliminar_elemento(a){
+      console.log(a);
+      var el = document.getElementById("item_"+a);
+      var selecc = el.checked;
+      var devolver;
+      if(selecc==true){
+        devolver=1
+      }else{
+      devolver=0
+      }
+      console.log(devolver);
+      $.ajax({
+            url: '{% url "visitar" %}',
+            data: {
+              'elemento': a,
+              'estado' : devolver,
+            },
+            dataType: 'json',
+            success: function (data) {
+            console.log("Estado");
+        console.log(data.estado);
+        var item = $("#item_"+data.pk);
+        var div = $("#detalle_"+data.pk);
+        // 1 es que se ha visto
+                if (data.estado  == 0){
+                    item.prop('checked', false);
+                    div.empty();
+                    div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR>  No se ha visitado aun <BR>");
+                }else{
+                    item.prop('checked', true);
+                    div.empty();
+                    div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR> "+data.fecha_visitado+"<BR>");
+                }
+
+                //location.reload();
+
+
+            }
+          });
+   }
+
+
+</script>
 {% endblock %}
 
 {% block contenido %}
@@ -381,7 +458,7 @@ if (!por_ciudad.hasClass("d-none")){
     <div class="col-12 col-sm-6 col-md-6">
         <!--Presupuesto-->
         <div  style="text-align:center;width:100%;"> <p class="text-center h5 titulo_mis_viajes" style="width:100%;"> Presupuesto <a href="{% url 'anadir_elemento_viaje' viaje.pk %}"><i class="fa fa-plus" style="font-size:24px"></i></a> </p> </div>
-
+        <canvas id="myChart" width="400" height="400"></canvas>
         <p class="text-center crusiva"><em>Total : {{viaje.coste_total}} €/persona</em></p>
         <div>
             {% with total=viaje.coste_total|restar:despues %}

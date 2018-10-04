@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0f920f51-a917-41a1-8108-0c8225f3ac8f" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_viajes/templates/viaje.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/viaje.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web_viajes/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,18 +14,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="viaje_anadir_puro.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
+    <leaf>
+      <file leaf-file-name="viaje.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="264" column="39" selection-start-line="264" selection-start-column="22" selection-end-line="264" selection-end-column="39" />
-              <folding>
-                <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#2;n#form#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#4;n#form#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#button#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="-3091">
+              <caret line="360" column="31" lean-forward="true" selection-start-line="360" selection-start-column="31" selection-end-line="360" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -33,8 +27,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web_viajes/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="39" column="44" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
+            <state relative-caret-position="119">
+              <caret line="34" column="74" selection-start-line="34" selection-start-column="74" selection-end-line="34" selection-end-column="74" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -42,11 +36,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web_viajes/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1288">
+              <caret line="235" column="6" selection-start-line="235" selection-start-column="6" selection-end-line="235" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web_viajes/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="745" column="5" lean-forward="true" selection-start-line="745" selection-start-column="5" selection-end-line="745" selection-end-column="5" />
+            <state relative-caret-position="241">
+              <caret line="1219" column="22" lean-forward="true" selection-start-line="1219" selection-start-column="22" selection-end-line="1219" selection-end-column="22" />
               <folding>
                 <element signature="e#0#40#0" expanded="true" />
               </folding>
@@ -65,6 +68,9 @@
       <find>usuarios</find>
       <find>anadir_usuarios_viaje</find>
       <find>buscador_ciudades</find>
+      <find>eliminar</find>
+      <find>viaje_elemento_delete</find>
+      <find>delete</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -84,6 +90,7 @@
         <option value="$PROJECT_DIR$/web_viajes/forms.py" />
         <option value="$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html" />
         <option value="$PROJECT_DIR$/web_viajes/views.py" />
+        <option value="$PROJECT_DIR$/web_viajes/templates/viaje.html" />
       </list>
     </option>
   </component>
@@ -98,6 +105,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -120,7 +128,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -153,17 +160,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="1248" height="797" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24959481" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32943678" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32894737" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -183,12 +190,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4488">
           <caret line="264" column="34" lean-forward="true" selection-start-line="264" selection-start-column="34" selection-end-line="264" selection-end-column="34" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#2;n#form#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#4;n#form#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -275,30 +276,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="264" column="39" selection-start-line="264" selection-start-column="22" selection-end-line="264" selection-end-column="39" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#2;n#form#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#4;n#form#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#6;n#form#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1288">
+          <caret line="235" column="6" selection-start-line="235" selection-start-column="6" selection-end-line="235" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="39" column="44" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
+        <state relative-caret-position="119">
+          <caret line="34" column="74" selection-start-line="34" selection-start-column="74" selection-end-line="34" selection-end-column="74" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
@@ -307,11 +302,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="745" column="5" lean-forward="true" selection-start-line="745" selection-start-column="5" selection-end-line="745" selection-end-column="5" />
+        <state relative-caret-position="241">
+          <caret line="1219" column="22" lean-forward="true" selection-start-line="1219" selection-start-column="22" selection-end-line="1219" selection-end-column="22" />
           <folding>
             <element signature="e#0#40#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3091">
+          <caret line="360" column="31" lean-forward="true" selection-start-line="360" selection-start-column="31" selection-end-line="360" selection-end-column="32" />
         </state>
       </provider>
     </entry>
