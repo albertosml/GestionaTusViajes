@@ -401,6 +401,25 @@ var myDoughnutChart = new Chart(ctx, {
 
 
 </script>
+<script>
+   function eliminar_elemento_presupuesto(el,via){
+   var confirmar = confirm("¿Estás seguro de que quieres eliminar este elemento del presupuesto?");
+   if (confirmar){
+        $.ajax({
+            url: '{% url "eliminar_elemento_presupuesto" %}',
+            data: {
+              'elemento': el,
+              'viaje' : via,
+            },
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            }
+            });
+   }
+
+   }
+</script>
 {% endblock %}
 
 {% block contenido %}
@@ -550,7 +569,7 @@ var myDoughnutChart = new Chart(ctx, {
             {% endif %}
     <div class="row">
         <div class="col-6"><a href="{% url 'editar_elemento' viaje.pk elemento.pk %}">Editar</a>  </div>
-        <div class="col-6"><a href="{% url 'viaje_elemento_delete' viaje.pk elemento.pk %}">Eliminar</a></div>
+        <div class="col-6"><button class="btn" onclick="eliminar_elemento_presupuesto({{elemento.pk}},{{viaje.pk}})">Eliminar elemento</button></div>
     </div>
 
 

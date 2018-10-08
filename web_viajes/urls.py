@@ -47,4 +47,5 @@ urlpatterns = [
     path('gestionar_elemento_presupuesto>', views.gestionar_elemento_presupuesto, name="gestionar_elemento_presupuesto"),
     path('editar_viaje>', views.editar_viaje, name="editar_viaje"),
     path('editar_elemento_presupuesto>', views.editar_elemento, name="editar_elemento"),
+    path('eliminar_elemento_presupuesto>', views.eliminar_elemento_presupuesto, name="eliminar_elemento_presupuesto"),
 ]

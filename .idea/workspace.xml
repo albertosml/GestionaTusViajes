@@ -4,6 +4,8 @@
     <list default="true" id="0f920f51-a917-41a1-8108-0c8225f3ac8f" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web_viajes/templates/viaje.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/viaje.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_viajes/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_viajes/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,12 +15,30 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="viaje.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="460" column="49" selection-start-line="460" selection-start-column="49" selection-end-line="460" selection-end-column="49" />
+            <state relative-caret-position="465">
+              <caret line="573" lean-forward="true" selection-start-line="573" selection-end-line="573" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web_viajes/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="421">
+              <caret line="1227" column="29" selection-start-line="1227" selection-start-column="29" selection-end-line="1227" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web_viajes/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="465">
+              <caret line="49" column="78" selection-start-line="49" selection-start-column="78" selection-end-line="49" selection-end-column="78" />
             </state>
           </provider>
         </entry>
@@ -55,6 +75,7 @@
         <option value="$PROJECT_DIR$/web_viajes/templates/mis_viajes.html" />
         <option value="$PROJECT_DIR$/web_viajes/forms.py" />
         <option value="$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html" />
+        <option value="$PROJECT_DIR$/web_viajes/urls.py" />
         <option value="$PROJECT_DIR$/web_viajes/views.py" />
         <option value="$PROJECT_DIR$/web_viajes/templates/viaje.html" />
       </list>
@@ -71,6 +92,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -93,7 +115,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -127,6 +148,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24947916" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -151,6 +173,13 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7854">
+          <caret line="462" column="10" selection-start-line="462" selection-start-column="10" selection-end-line="462" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4488">
@@ -242,13 +271,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="1214" column="22" lean-forward="true" selection-start-line="1214" selection-start-column="22" selection-end-line="1214" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1288">
@@ -258,15 +280,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="34" column="74" selection-start-line="34" selection-start-column="74" selection-end-line="34" selection-end-column="74" />
+        <state relative-caret-position="465">
+          <caret line="49" column="78" selection-start-line="49" selection-start-column="78" selection-end-line="49" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="421">
+          <caret line="1227" column="29" selection-start-line="1227" selection-start-column="29" selection-end-line="1227" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="460" column="49" selection-start-line="460" selection-start-column="49" selection-end-line="460" selection-end-column="49" />
+        <state relative-caret-position="465">
+          <caret line="573" lean-forward="true" selection-start-line="573" selection-end-line="573" />
         </state>
       </provider>
     </entry>
