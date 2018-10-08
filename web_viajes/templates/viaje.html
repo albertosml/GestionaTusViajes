@@ -458,7 +458,7 @@ var myDoughnutChart = new Chart(ctx, {
     <div class="col-12 col-sm-6 col-md-6">
         <!--Presupuesto-->
         <div  style="text-align:center;width:100%;"> <p class="text-center h5 titulo_mis_viajes" style="width:100%;"> Presupuesto <a href="{% url 'anadir_elemento_viaje' viaje.pk %}"><i class="fa fa-plus" style="font-size:24px"></i></a> </p> </div>
-        <canvas id="myChart" width="400" height="400"></canvas>
+        <canvas id="myChart" width="50%" height=""></canvas>
         <p class="text-center crusiva"><em>Total : {{viaje.coste_total}} €/persona</em></p>
         <div>
             {% with total=viaje.coste_total|restar:despues %}
