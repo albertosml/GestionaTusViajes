@@ -51,7 +51,7 @@ class EntradaForo(models.Model):
         ordering = ['-fecha_realizacion']
 
 class Valoracion(models.Model):
-    fecha_visita = models.DateTimeField(null=False,auto_now_add=True)
+    fecha_visita = models.DateTimeField(null=False)
     comentario = models.CharField(null=False, max_length=280)
     lo_mejor = models.CharField(max_length=140)
     lo_peor = models.CharField(max_length=140)

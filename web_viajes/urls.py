@@ -14,6 +14,7 @@ urlpatterns = [
     ##formulario
     path('ciudad/nuevo/',views.add_city, name = "anadir_ciudad"),
     path('ciudad/<int:pk>/valorar/',views.add_valoration, name = "ciudad_valorar"),
+    path('ciudad/<int:pk>/valorar/<dia>/',views.add_valoration_day, name = "ciudad_valorar_dia"),
     path('ciudad/<int:pk>/comentar/',views.add_entrada, name = "ciudad_entrada"),
     path('ciudad/<int:pk>/nuevafoto/',views.add_photo, name = "ciudad_foto"),
     path('ciudad/<int:pk>/deletefoto/', forms.FotoDelete.as_view(), name='ciudad_foto_delete'),
@@ -43,6 +44,7 @@ urlpatterns = [
     path('anadir/ciudades/viaje/', views.anadir_ciudades_viaje, name="anadir_ciudades_viaje"),
     path('puntuar_foto', views.puntuar_foto, name="puntuar_foto"),
     path('anadir_valoracion', views.add_valoracion, name="anadir_valoracion"),
+    path('anadir_valoracion_dia', views.add_valoracion_dia, name="anadir_valoracion_dia"),
     path('anadir_parametros_valoracion>', views.add_parametres_valoration, name="anadir_parametros"),
     path('gestionar_elemento_presupuesto>', views.gestionar_elemento_presupuesto, name="gestionar_elemento_presupuesto"),
     path('editar_viaje>', views.editar_viaje, name="editar_viaje"),

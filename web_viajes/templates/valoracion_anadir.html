@@ -99,37 +99,46 @@ for (var i = 0 ; i<parametros.length-1;i++){
 diccionario[parametros[i].innerHTML]= "2.5";
 }
 console.log(diccionario);
-
-
+console.log("Dia");
+console.log("{{dia}}");
 $('#form').on('submit',function(e){
 
   e.preventDefault();
   console.log($(this).serialize());
-        $.ajax({
+var conf = confirm("Se va a enviar la valoración de la ciudad. Esta no se podrá borrar ni modificar. ¿Desea enviar?")
+    if(conf){
+            $.ajax({
             url: '{% url "anadir_valoracion" %}',
              type : "POST",
             dataType: 'json',
             data : $(this).serialize(),
             success: function (data) {
-
-            console.log(data);
-
-            //opbtenemos los datos de los range
-            var cadena = "";
-            for(i in diccionario){
-            cadena+=""+i+":"+diccionario[i]+",";
-                console.log(i);
-                console.log(diccionario[i]);
+                console.log(data);
+                //opbtenemos los datos de los range
+                var cadena = "";
+                for(i in diccionario){
+                cadena+=""+i+":"+diccionario[i]+",";
+                    console.log(i);
+                    console.log(diccionario[i]);
             }
-    console.log(cadena);
+                console.log(cadena);
                   if(data){
+                var dia = "";
+                  if ({{dia_yn}} == 1){
+                    var dia = "{{dia}}";
+                    console.log("Esto es que tiene la variable dia bien");
+                    console.log(dia);
+                  }
+                  console.log(dia);
+                  //alert("Amo a ve");
                       $.ajax({
                               url: '{% url "anadir_parametros" %}',
                               dataType: 'json',
                               data : {
                               'ciudad' : {{ciudad}},
                               'idValoracion': data.valoracion,
-                              'datos' : cadena
+                              'datos' : cadena,
+                              'dia' : dia
                               },
                               success : function(d){
                               location.reload();
@@ -146,6 +155,8 @@ $('#form').on('submit',function(e){
 
                 }
          });
+    }
+
   });
 
 

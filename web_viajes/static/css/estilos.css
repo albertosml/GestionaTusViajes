@@ -143,3 +143,12 @@ padding:2px;
 width : 80% !important;
 
 }
+
+.ciudad_top:nth-child(even) {
+    background: #eeeeee;
+}
+
+.ciudad_top:nth-child(odd) {
+    background: #edfdff
+}
+

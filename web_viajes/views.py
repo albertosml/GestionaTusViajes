@@ -259,6 +259,45 @@ def add_city(request):
     return render(request, 'ciudad_anadir.html', {'form': form})
 
 @csrf_protect
+def add_valoration_day(request,pk,dia):
+    ciudad = Ciudad.objects.get(pk=pk)
+
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = AnadirValoracion(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            if request.user.is_authenticated:
+                usuario = User.objects.get(username=request.user.username)
+            else:
+                usuario = 'Anónimo'
+
+            valoracion = Valoracion()
+            valoracion.comentario = form.cleaned_data['comentario']
+
+            valoracion.lo_mejor = form.cleaned_data['lo_mejor']
+            valoracion.lo_peor = form.cleaned_data['lo_peor']
+            valoracion.nombre_ciudad = ciudad
+            valoracion.nombre_usuario = usuario
+            print(dia)
+            valoracion.fecha_visita = dia
+            valoracion.save()
+
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse('ciudad',args=[pk]))
+
+    # If this is a GET (or any other method) create the default form.
+    else:
+        form = AnadirValoracion()
+
+        items = Item_Valoracion.objects.all()
+
+    return render(request, 'valoracion_anadir.html', {'form': form, 'items' : items , 'ciudad' : pk, 'city' : ciudad, 'dia' : dia , 'dia_yn' : 1})
+@csrf_protect
 def add_valoration(request,pk):
     ciudad = Ciudad.objects.get(pk=pk)
 
@@ -281,6 +320,7 @@ def add_valoration(request,pk):
             valoracion.lo_peor = form.cleaned_data['lo_peor']
             valoracion.nombre_ciudad = ciudad
             valoracion.nombre_usuario = usuario
+            valoracion.fecha_visita = datetime.datetime.now()
             valoracion.save()
 
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
@@ -294,7 +334,7 @@ def add_valoration(request,pk):
 
         items = Item_Valoracion.objects.all()
 
-    return render(request, 'valoracion_anadir.html', {'form': form, 'items' : items , 'ciudad' : pk, 'city' : ciudad})
+    return render(request, 'valoracion_anadir.html', {'form': form, 'items' : items , 'ciudad' : pk, 'city' : ciudad, 'dia_yn' : 0})
 
 def add_entrada(request,pk):
     if request.method == 'POST':
@@ -937,6 +977,37 @@ def add_valoracion(request):
             valoracion.lo_peor = form.cleaned_data['lo_peor']
 
             valoracion.nombre_usuario = usuario
+            valoracion.fecha_visita = datetime.datetime.now()
+            valoracion.save()
+
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            data = {
+                'exito' : True,
+                'valoracion' : valoracion.pk,
+
+            }
+        return JsonResponse(data)
+
+@csrf_protect
+def add_valoracion_dia(request):
+    if request.method == "POST":
+        # Create a form instance and populate it with data from the request (binding):
+        form = AnadirValoracion(request.POST)
+        # Check if the form is valid:
+        if form.is_valid():
+            if request.user.is_authenticated:
+                usuario = User.objects.get(username=request.user.username)
+            else:
+                usuario = 'Anónimo'
+
+            valoracion = Valoracion()
+            valoracion.comentario = form.cleaned_data['comentario']
+
+            valoracion.lo_mejor = form.cleaned_data['lo_mejor']
+            valoracion.lo_peor = form.cleaned_data['lo_peor']
+
+            valoracion.nombre_usuario = usuario
+            valoracion.fecha_visita = dia
             valoracion.save()
 
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
@@ -949,14 +1020,20 @@ def add_valoracion(request):
 
 
 
+
 @csrf_protect
 def add_parametres_valoration(request):
     idVal = request.GET.get('idValoracion', None)
     datos = request.GET.get('datos', None)
     ciu = request.GET.get('ciudad', None)
+    dia = request.GET.get('dia', None)
     ciudad = Ciudad.objects.get(pk=ciu)
     valoracion = Valoracion.objects.get(pk=idVal)
     valoracion.nombre_ciudad = ciudad
+    print(dia)
+    if dia != "":
+        valoracion.fecha_visita = dia
+
 
     valoracion.save()
 

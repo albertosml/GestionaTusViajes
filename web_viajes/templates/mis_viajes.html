@@ -42,8 +42,9 @@ viajes_antiguos = 0;
         <div class="row container-fluid">
             {% for viaje in viajes_siguientes%}
 
-                <div class="col-12 col-sm-6 borde_viajes viajes_mis_viajes fondo">
-                    <strong >{{viaje.nombre}}</strong>
+                <div class="col-12 col-sm-6 borde_viajes viajes_mis_viajes fondo ">
+
+                    <p style="text-align:center"><strong >{{viaje.nombre}}</strong></p>
                     <p><strong class="item">Fecha inicio:</strong> {{viaje.fecha_inicio.day}}-{{viaje.fecha_inicio.month}}-{{viaje.fecha_inicio.year}}</p>
                     <p><strong class="item">Fecha fin:</strong> {{viaje.fecha_fin.day}}-{{viaje.fecha_fin.month}}-{{viaje.fecha_fin.year}}</p>
                     <p><i class="fa fa-money item"></i> {{viaje.coste_total}} €</p>
@@ -66,7 +67,7 @@ viajes_antiguos = 0;
             {% for viaje in viajes_antiguos%}
 
                 <div class="col-12 col-sm-6 borde_viajes viajes_mis_viajes">
-                    <strong>{{viaje.nombre}}</strong>
+                      <p style="text-align:center"><strong >{{viaje.nombre}}</strong></p>
                     <p><strong class="item">Fecha inicio:</strong> {{viaje.fecha_inicio.day}}-{{viaje.fecha_inicio.month}}-{{viaje.fecha_inicio.year}}</p>
                     <p><strong class="item">Fecha fin:</strong> {{viaje.fecha_fin.day}}-{{viaje.fecha_fin.month}}-{{viaje.fecha_fin.year}}</p>
 
@@ -88,6 +89,7 @@ viajes_antiguos = 0;
                  <p><strong class="item"> Fecha visita: </strong> {{valoracion.1.day}}/{{valoracion.1.month}}/{{valoracion.1.year}} - {{valoracion.2.day}}/{{valoracion.2.month}}/{{valoracion.2.year}}</p>
                         <p>  Hace {{valoracion.2|dias_restantes }} dias</p>
                 <p><a href="{% url 'ciudad_valorar' valoracion.0.pk %}">Valorar ciudad</a></p>
+                <p><a href="{% url 'ciudad_valorar_dia' valoracion.0.pk valoracion.1%}">Valorar ciudad</a></p>
              </div>
 
     {%endfor%}
@@ -99,8 +101,8 @@ viajes_antiguos = 0;
             <p class="h5 text-center titulo_mis_viajes"> Top ciudades <i class="fa fa-trophy" style="font-size:24px"></i></p>
 
             {% for  ciudad in top_ciudades %}
-            <div class="row container-fluid">
-                <div class="col borde_ciudades">
+
+                <div class="col borde_ciudades ciudad_top">
                     <p class="h4 text-center">{{ forloop.counter }} º</p>
 
                     <p class="h5 text-center"> {{ ciudad.nombre_ciudad }}</p>
@@ -109,7 +111,6 @@ viajes_antiguos = 0;
                     <p class=" text-center"><em>{{ ciudad.num_valoraciones }} valoraciones</em></p>
                  <p class="text-center"><a class="text-center" href="{%url 'ciudad' ciudad.pk %}" style="text-align:center">Ver ciudad</a></p>
                 </div>
-            </div>
             {% endfor %}
 
         </div>

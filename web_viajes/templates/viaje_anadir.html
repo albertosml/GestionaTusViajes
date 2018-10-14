@@ -61,11 +61,27 @@
             <div class="form-group mt-3 justify-content-center">
 
           {% if viaje.planificacion == False %}
+                <div class="row  col-12 col-md-8 " style="margin:auto">
+                    <div class="col-12">
+                    <strong>Usuario que paga: </strong>
+                    </div>
+
 			{% for u in viaje.usuarios.all %}
-			  <input required  type="radio" name="usuario" value="{{u.username}}" >{{u.username}}
+                    <div class="col-sm-6 col-0" >
+
+                    </div>
+                    <div class="col-sm-6 col-12">
+                     <input required style="margin:auto"  type="radio" name="usuario" value="{{u.username}}" >{{u.username}}
+                    </div>
 			{% endfor %}
 		  {% endif %}
+                    <div class="col-sm-6 col-0">
+
+                    </div>
+                    <div class="col-sm-6 col-12" >
 			<input required type="radio" name="usuario" value="nadie" checked> Sin pagar
+                    </div>
+            </div>
             </div>
           <div class="col-12 col-md-8 " style="justify-content:center;display:flex;margin:auto">
             <button type="submit" class="btn btn-primary " style="margin:auto;">Añadir Elemento</button>
