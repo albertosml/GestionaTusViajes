@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
   integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
   crossorigin=""/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 {% endblock %}
 
 {% block nombre %}{{viaje.nombre}}
@@ -24,12 +23,16 @@
 <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
   integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
   crossorigin=""></script>
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
 <script type="text/javascript">
-$( "input[id*='map']" ).addClass("ajustar");
-  var geocoder = new google.maps.Geocoder();
+  $( "input[id*='map']" ).addClass("ajustar");
 
   var iconos = [];
+  var colors = ['blue','green','orange','yellow','violet','grey','black'];
 
   var redIcon = new L.Icon({
           iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
@@ -103,47 +106,106 @@ $( "input[id*='map']" ).addClass("ajustar");
           shadowSize: [41, 41]
         }) );
 
-  var cont = 0;
-
   function cargarCiudad(ciudad){
     var id = "map".concat(ciudad);
 
-    geocoder.geocode( { 'address': ciudad }, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        
-        var latitude = results[0].geometry.location.lat();
-        var longitude = results[0].geometry.location.lng();
-        var mymap = L.map(id).setView([latitude, longitude], 14);
+    // Instantiate a map and platform object:
+    var platform = new H.service.Platform({
+        'app_id': 'Thm7uUr4J8LiMoV7ki1B',
+        'app_code': 'XgKYYrF5SZHc27xXj0r4Pg'
+    });
+
+    // Get an instance of the geocoding service:
+    var geocoder = platform.getGeocodingService();
+
+    // Call the geocode method with the search parameters,
+    // the callback and an error callback function (called if a
+    // communication error occurs):
+    geocoder.search({ searchText: ciudad }, function (result) {
+        var location = result.Response.View[0].Result[0].Place.Locations[0];
+
+        var mymap = L.map(id).setView([location.DisplayPosition.Latitude, location.DisplayPosition.Longitude], 13);
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-              maxZoom: 18,
-              attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                  '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                  'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-              id: 'mapbox.streets'
-          }).addTo(mymap);
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox.streets'
+        }).addTo(mymap);
+
+        var coordenadas = [];
 
         {% for key,value in cosas_fecha.items %}
-          {% for cosa in value %}
-            var city = "{{cosa.ciudad}}";
-            var direccion = "{{cosa.nombre}}, {{cosa.ciudad}}";
-            geocoder.geocode( { 'address': direccion }, function(results, status) {
-              if (status == google.maps.GeocoderStatus.OK) {
-                var latitude = results[0].geometry.location.lat();
-                var longitude = results[0].geometry.location.lng();
-                var visto = "{{cosa.visto}}";
-                var marker;
-                if(visto == "True") { marker = L.marker([latitude,longitude], {icon : redIcon}); }
-                else { marker = L.marker([latitude,longitude], {icon: iconos["{{key}}" % 7]}); }
-                marker.bindPopup("{{cosa.nombre}}");
-                marker.addTo(mymap);
-              } 
-            }); 
-          {% endfor %}
-        {% endfor%}
-      } 
-    }); 
-  }
+
+            {% for cosa in value %}
+                var city = "{{cosa.ciudad}}";
+
+                if(city == ciudad) {
+                    var direccion = "{{cosa.nombre}}, {{cosa.ciudad}}";
+
+                    geocoder.search({ searchText: direccion }, function(result) {
+                        var location = result.Response.View[0].Result[0].Location.DisplayPosition;
+
+                        var lat = location.Latitude;
+                        var long = location.Longitude;
+
+                        var visto = "{{cosa.visto}}";
+                        var marker;
+                        if(visto == "True") { marker = L.marker([lat,long], {icon : redIcon}); }
+                        else { 
+                            marker = L.marker([lat,long], {icon: iconos["{{key}}" % 7]}); 
+                            var ord = "{{cosa.orden}}";
+                            console.log(ord);
+                            coordenadas.push([lat, long, ord]);    
+                        }
+                        marker.bindPopup("{{cosa.nombre}}");
+                        marker.addTo(mymap);
+
+                    }, function(error) { alert("No se ha encontrado la direccion: " + direccion); });                    
+                }
+            {% endfor %}
+
+            console.log(coordenadas);
+
+            coordenadas.sort(function(a, b){return a[2] >= b[2];});
+            console.log(coordenadas);
+
+            /*if(coordenadas.length > 1) {
+                for(i=0;i<(coordenadas.length - 1);i++) {
+                    var router = platform.getRoutingService(),
+                            routeRequestParams = {
+                            mode: 'fastest;publicTransport',
+                            waypoint0: coordenadas[i], 
+                            waypoint1: coordenadas[i+1],  
+                            routeattributes: 'waypoints,shape,legs',
+                            maneuverattributes: 'direction'
+                        };
+
+                    router.calculateRoute( routeRequestParams, function (result) {
+                        var route = result.response.route[0];
+                        var lineString = new H.geo.LineString(),
+                                routeShape = route.shape,
+                                polyline;
+
+                        var latlngs = [];
+
+                        routeShape.forEach(function(point) {
+                            var parts = point.split(',');
+                            latlngs.push([parts[0],parts[1]]);
+                        });
+
+                        var polyline;
+                        L.polyline(latlngs, {color: colors["{{key}}" % 7]}).addTo(mymap);
+                                    
+                    }, function(e) { });
+                }
+            } */ 
+
+            coordenadas = [];
+        {% endfor %}
+    },function(e){ console.log(e); });
+  }    
 
   {% for c in viaje.ciudades.all%}
     $("#mapas").append("<p>Mapa de {{c.nombre_ciudad}}:</p>");
