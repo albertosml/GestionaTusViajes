@@ -122,9 +122,14 @@
     // the callback and an error callback function (called if a
     // communication error occurs):
     geocoder.search({ searchText: ciudad }, function (result) {
-        var location = result.Response.View[0].Result[0].Place.Locations[0];
+	var location = result.Response.View[0].Result[0].Place;
+	var mymap;
 
-        var mymap = L.map(id).setView([location.DisplayPosition.Latitude, location.DisplayPosition.Longitude], 13);
+	if(location === undefined) {
+		location = result.Response.View[0].Result[0].Location;
+		mymap = L.map(id).setView([location.DisplayPosition.Latitude, location.DisplayPosition.Longitude], 13);
+	}
+	else mymap = L.map(id).setView([location.Locations[0].DisplayPosition.Latitude, location.Locations[0].DisplayPosition.Longitude], 13);
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
@@ -134,77 +139,78 @@
             id: 'mapbox.streets'
         }).addTo(mymap);
 
-        var coordenadas = [];
+	var coordenadas = [];            
 
-        {% for key,value in cosas_fecha.items %}
+	{% for key,value in cosas_fecha.items %}
+	    
+	    function poner(lat,long,ord,key) { coordenadas.push([lat,long,ord,key]); }
 
-            {% for cosa in value %}
+	    {% for cosa in value %}
                 var city = "{{cosa.ciudad}}";
 
-                if(city == ciudad) {
-                    var direccion = "{{cosa.nombre}}, {{cosa.ciudad}}";
+		if(city == ciudad) {
+		    var direccion = "{{cosa.nombre}}, {{cosa.ciudad}}";
 
-                    geocoder.search({ searchText: direccion }, function(result) {
-                        var location = result.Response.View[0].Result[0].Location.DisplayPosition;
+		    geocoder.search({ searchText: direccion }, function(result) {		
+		        var location = result.Response.View[0].Result[0].Location;
 
-                        var lat = location.Latitude;
-                        var long = location.Longitude;
+			if(location === undefined) alert("No se ha encontrado la direccion: " + direccion); 
+			else {
+				var lat = location.DisplayPosition.Latitude;
+				var long = location.DisplayPosition.Longitude;
 
-                        var visto = "{{cosa.visto}}";
-                        var marker;
-                        if(visto == "True") { marker = L.marker([lat,long], {icon : redIcon}); }
-                        else { 
-                            marker = L.marker([lat,long], {icon: iconos["{{key}}" % 7]}); 
-                            var ord = "{{cosa.orden}}";
-                            console.log(ord);
-                            coordenadas.push([lat, long, ord]);    
-                        }
-                        marker.bindPopup("{{cosa.nombre}}");
-                        marker.addTo(mymap);
+				var visto = "{{cosa.visto}}";
+				var marker;
+				if(visto == "True") { marker = L.marker([lat,long], {icon : redIcon}); }
+				else { 
+				    marker = L.marker([lat,long], {icon: iconos["{{key}}" % 7]}); 
+				    var ord = "{{cosa.orden}}";
+				    poner(lat, long, ord, "{{key}}");
+				}
+				marker.bindPopup("{{cosa.nombre}}");
+				marker.addTo(mymap);
+			}
+		   }, function(error) { console.log(error); });                  
+		}
+	     {% endfor %}
+	{% endfor %} 
+	
+	setTimeout(function() {
+		coordenadas.sort(function(a, b){ if(parseInt(a[3]) === parseInt(b[3])) return parseInt(a[2]) > parseInt(b[2]) ? true : false; else return parseInt(a[3]) > parseInt(b[3]); });
+		
+		if(coordenadas.length > 1) {
+			for(let i=0;i<(coordenadas.length - 1);++i) {
+				if(coordenadas[i][3] === coordenadas[i+1][3]) {				    
+				    var router = platform.getRoutingService(),
+					    routeRequestParams = {
+					    mode: 'shortest;pedestrian',
+					    waypoint0: [coordenadas[i][0],coordenadas[i][1]], 
+					    waypoint1: [coordenadas[i+1][0],coordenadas[i+1][1]],  
+					    routeattributes: 'waypoints,shape,legs',
+					    maneuverattributes: 'direction'
+					};
 
-                    }, function(error) { alert("No se ha encontrado la direccion: " + direccion); });                    
-                }
-            {% endfor %}
+				   router.calculateRoute( routeRequestParams, function (result) {
+					var route = result.response.route[0];
+					var lineString = new H.geo.LineString(),
+								routeShape = route.shape,
+								polyline;
 
-            console.log(coordenadas);
+					var latlngs = [];
 
-            coordenadas.sort(function(a, b){return a[2] >= b[2];});
-            console.log(coordenadas);
+					routeShape.forEach(function(point) {
+					    var parts = point.split(',');
+					    latlngs.push([parts[0],parts[1]]);
+					});
 
-            /*if(coordenadas.length > 1) {
-                for(i=0;i<(coordenadas.length - 1);i++) {
-                    var router = platform.getRoutingService(),
-                            routeRequestParams = {
-                            mode: 'fastest;publicTransport',
-                            waypoint0: coordenadas[i], 
-                            waypoint1: coordenadas[i+1],  
-                            routeattributes: 'waypoints,shape,legs',
-                            maneuverattributes: 'direction'
-                        };
-
-                    router.calculateRoute( routeRequestParams, function (result) {
-                        var route = result.response.route[0];
-                        var lineString = new H.geo.LineString(),
-                                routeShape = route.shape,
-                                polyline;
-
-                        var latlngs = [];
-
-                        routeShape.forEach(function(point) {
-                            var parts = point.split(',');
-                            latlngs.push([parts[0],parts[1]]);
-                        });
-
-                        var polyline;
-                        L.polyline(latlngs, {color: colors["{{key}}" % 7]}).addTo(mymap);
-                                    
-                    }, function(e) { });
-                }
-            } */ 
-
-            coordenadas = [];
-        {% endfor %}
-    },function(e){ console.log(e); });
+					console.log(coordenadas[i][3] + " " + i);
+					L.polyline(latlngs, {color: colors[parseInt(coordenadas[i][3]) % 7]}).addTo(mymap);
+			    	  }, function(e) { console.log(e); });
+				}
+			}
+		}
+	   }, 1000);
+    }, function(e){ console.log(e) });
   }    
 
   {% for c in viaje.ciudades.all%}
