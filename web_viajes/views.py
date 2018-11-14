@@ -149,7 +149,7 @@ def travel(request,pk):
     diccionario_cosas = {}
     cosas_ = CosasPorVer.objects.filter(idViaje=pk).order_by('fecha_a_visitar','orden')
 
-    cont = 0;
+    cont = 0
 
     for cosa in cosas_:
         if cosa.fecha_a_visitar is not None:
@@ -281,7 +281,6 @@ def add_valoration_day(request,pk,dia):
             valoracion.lo_peor = form.cleaned_data['lo_peor']
             valoracion.nombre_ciudad = ciudad
             valoracion.nombre_usuario = usuario
-            print(dia)
             valoracion.fecha_visita = dia
             valoracion.save()
 
@@ -297,6 +296,7 @@ def add_valoration_day(request,pk,dia):
         items = Item_Valoracion.objects.all()
 
     return render(request, 'valoracion_anadir.html', {'form': form, 'items' : items , 'ciudad' : pk, 'city' : ciudad, 'dia' : dia , 'dia_yn' : 1})
+
 @csrf_protect
 def add_valoration(request,pk):
     ciudad = Ciudad.objects.get(pk=pk)
@@ -472,48 +472,6 @@ def gestionar_elemento_presupuesto(request):
         elemento.save()
     return JsonResponse({'resultado' : True})
 
-"""
-def add_thing_to_see(request):
-    ciudad = request.GET.get('ciudad', None)
-    id_viaje = request.GET.get('viaje', None)
-    fecha_a_visitar = request.GET.get('fecha_a_visitar', None)
-    fecha_visitado = request.GET.get('fecha_visitado', None)
-    visto =request.GET.get('visto', None)
-    descripcion = request.GET.get('descripcion', None)
-    nombre = request.GET.get('nombre', None)
-
-    viaje = list(Viaje.objects.filter(pk=id_viaje))[0]
-
-    elemento = CosasPorVer()
-    elemento.descripcion = descripcion
-    elemento.idViaje = viaje
-    elemento.nombre = nombre
-
-    if fecha_visitado != "":
-        elemento.fecha_visitado = fecha_visitado
-    if fecha_a_visitar != "":
-        elemento.fecha_a_visitar = fecha_a_visitar
-
-    if visto=="false":
-        elemento.visto = False
-    else:
-        elemento.visto = True
-
-    for c in Ciudad.objects.filter(pk=int(ciudad)):
-        elemento.ciudad = c
-
-    elemento.save()
-    data = {
-        'exito': True
-    }
-
-    return JsonResponse(data)
-
-def add_thing_to_see_get(request,id_viaje):
-    print("se cargan los datos del formulario")
-    ciudades = ciudades_viaje(id_viaje)
-    return render(request, 'viaje_elemento_anadir.html', {'ciudades': ciudades,'id' : id_viaje})
-"""
 @csrf_protect
 def add_thing(request,id_viaje):
     if request.method == 'POST':
@@ -564,57 +522,6 @@ def add_thing_city(request):
         }
         return JsonResponse(data)
 
-        # If this is a GET (or any other method) create the default form.
-
-
-
-
-"""
-def add_photo_viaje(request,id_viaje):
-    print("Se llama a esta funcion")
-    ciudades = ""
-    if request.method == 'POST':
-        print("Entra en el post")
-        # Create a form instance and populate it with data from the request (binding):
-        form = AnadirFotoViaje(request.POST)
-        # Check if the form is valid:
-        print(form.errors)
-        if form.is_valid():
-            print("Es valido el form")
-            viaje = list(Viaje.objects.filter(pk=id_viaje))[0]
-            usuario = Usuario.objects.get(pk='marcoslupion')
-
-            foto = Foto()
-            foto.URL = form.cleaned_data['URL']
-            #foto.nombre_ciudad = form.cleaned_data['nombre_ciudad']
-            foto.nombre_usuario = usuario
-            foto.idViaje=viaje
-
-            ciudad = request.GET.get('ciudad', None)
-            print("Valores= estado %s " % ciudad)
-
-            for c in Ciudad.objects.filter(pk=int(ciudad)):
-                foto.nombre_ciudad = c
-
-            foto.save()
-            data = {
-                'exito': True
-            }
-            ciudades=""
-            return JsonResponse(data)
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-
-            # redirect to a new URL:
-            #return HttpResponseRedirect(reverse('viaje',args=[id_viaje]))
-
-    # If this is a GET (or any other method) create the default form.
-    else:
-        print("primera vez")
-        form = AnadirFotoViaje()
-        ciudades = ciudades_viaje(id_viaje)
-
-    return render(request, 'foto_anadir.html', {'form': form,'ciudades':ciudades, 'id' : id_viaje})
-"""
 def edit_thing(request, id_viaje, id_cosa):
     cosa= CosasPorVer.objects.filter(idViaje=id_viaje, pk=id_cosa)
 
@@ -709,49 +616,6 @@ def anadir_foto(request):
 
     return JsonResponse(data)
 
-"""
-def add_photo_viaje_v2(request,id_viaje):
-    print("SE LLAMA A LA NUEVA FUNCION PARA PROCESAR EL FORMULARIO")
-    ciudades = ""
-    if request.method == 'POST':
-        print("ENTRA EN EL POST")
-        # Create a form instance and populate it with data from the request (binding):
-
-        viaje = list(Viaje.objects.filter(pk=id_viaje))[0]
-        usuario = Usuario.objects.get(pk='marcoslupion')
-
-        ciudad = request.POST('ciudad', None)
-        URL= request.GET.get('url',None)
-
-        foto = Foto()
-        #foto.nombre_ciudad = form.cleaned_data['nombre_ciudad']
-        foto.nombre_usuario = usuario
-        foto.idViaje=viaje
-        foto.URL=URL
-
-        print("Valores= estado %s " % ciudad)
-
-        for c in Ciudad.objects.filter(pk=int(ciudad)):
-            foto.nombre_ciudad = c
-
-        foto.save()
-        data = {
-            'exito': True
-        }
-        ciudades=""
-        return JsonResponse(data)
-        # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-
-        # redirect to a new URL:
-            #return HttpResponseRedirect(reverse('viaje',args=[id_viaje]))
-    # If this is a GET (or any other method) create the default form.
-    else:
-        print("PRIMERA VEZ QUE ENTRA ")
-        ciudades = ciudades_viaje(id_viaje)
-    print("DEVUELVE LA VISTA")
-    return render(request, 'foto_anadirv2.html', {'ciudades':ciudades, 'id' : id_viaje})
-"""
-
 def buscar_usuarios(request):
     nueva_lista = list()
     usuario = request.GET.get('usuario', None)
@@ -827,7 +691,6 @@ def anadir_usuarios_viaje(request):
 
     return JsonResponse(data)
 
-
 def anadir_ciudades_viaje(request):
     viaje = Viaje.objects.get(pk=request.GET.get('pk', None))
 
@@ -846,6 +709,7 @@ def anadir_ciudades_viaje(request):
     }
 
     return JsonResponse(data)
+
 def add_photo_viaje(request,pk):
     if request.method == 'POST':
 
@@ -905,6 +769,9 @@ def create_user(request):
     return render(request, 'registrar.html', {'form': form})
 
 def update_user(request,pk):
+    if len(request.user.username) == 0:
+        return HttpResponseRedirect(reverse('inicio'))
+
     usuario = User.objects.get(username=request.user.username)
 
     if request.method == 'POST':
@@ -1018,9 +885,6 @@ def add_valoracion_dia(request):
             }
         return JsonResponse(data)
 
-
-
-
 @csrf_protect
 def add_parametres_valoration(request):
     idVal = request.GET.get('idValoracion', None)
@@ -1100,7 +964,6 @@ def editar_viaje(request):
     # se tienen que añadir los usuarios solamente, funciona correctamente
     if planificacion_anterior == True and planificacion_actual==False:
         anadir_usuarios_viaje_e(usuarios_anadir,viaje)
-        #funciona  correctamente
     elif planificacion_anterior == True and planificacion_actual==True:
         viaje.num_personas = num_personas
         elementos = ElementoPresupuesto.objects.filter(idViaje=viaje)
@@ -1209,9 +1072,6 @@ def anadir_usuarios_viaje_e(usuarios,viaje):
     viaje.coste_total = suma
     viaje.save()
 
-
-
-
 def gestionar_ciudades(ciudades_eliminar,ciudades_anadir,viaje):
     ciudades_antiguas = ciudades_eliminar.split(",")
     print("adios")
@@ -1304,3 +1164,20 @@ def eliminar_elemento_presupuesto(request):
 
     return JsonResponse(data)
 
+def comprobar_usuarios_viaje(request):
+    usuario = request.GET.get('usuario', None)
+    id_viaje = request.GET.get('viaje', None)
+
+    user = User.objects.filter(username__contains=usuario)
+    viaje = Viaje.objects.get(pk=id_viaje)
+
+    print(usuario + " " + id_viaje)
+
+    bandera = False
+
+    for u in viaje.usuarios.all():
+        if u == user: 
+            bandera = True
+
+    if bandera == False:
+        return HttpResponseRedirect(reverse('inicio'))

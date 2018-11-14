@@ -115,11 +115,12 @@ class AnadirCosaQueVer(forms.ModelForm):
 class EditarCosaForm(forms.ModelForm):
     class Meta:
         model = CosasPorVer
-        fields = ['nombre','descripcion','fecha_a_visitar','fecha_visitado','orden']
+        fields = ['nombre','descripcion','fecha_a_visitar','fecha_visitado','orden','visto']
         widgets = { 'descripcion': forms.TextInput(attrs={'style': 'border-color: orange;'}),
                     'fecha_a_visitar': forms.DateInput(format = '%Y-%m-%d',attrs={'type': 'date','style': 'border-color: orange;'}),
                     'fecha_visitado': forms.DateInput(format = '%Y-%m-%d',attrs={'type': 'date','style': 'border-color: orange;'}), 
-                    'nombre': forms.TextInput(attrs={'style': 'border-color: orange;'}), }
+                    'nombre': forms.TextInput(attrs={'style': 'border-color: orange;'}), 
+                    'visto': forms.CheckboxInput(attrs={'style': 'border-color: orange;'})}
 
 class EditarCosaViaje(UpdateView):
     model = CosasPorVer

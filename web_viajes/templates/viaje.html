@@ -109,27 +109,27 @@
   function cargarCiudad(ciudad){
     var id = "map".concat(ciudad);
 
-    // Instantiate a map and platform object:
+    // Instancio el mapa y la plataforma:
     var platform = new H.service.Platform({
         'app_id': 'Thm7uUr4J8LiMoV7ki1B',
         'app_code': 'XgKYYrF5SZHc27xXj0r4Pg'
     });
 
-    // Get an instance of the geocoding service:
+    // Obtengo una instancia del geolocalizador
     var geocoder = platform.getGeocodingService();
 
-    // Call the geocode method with the search parameters,
-    // the callback and an error callback function (called if a
-    // communication error occurs):
+    // Llamo al método de geocodificación con los parámetros de búsqueda,
+    // la función de retrollamada, la función de retrollamada de error en 
+    // la comunicación 
     geocoder.search({ searchText: ciudad }, function (result) {
-	var location = result.Response.View[0].Result[0].Place;
-	var mymap;
+        var location = result.Response.View[0].Result[0].Place;
+        var mymap;
 
-	if(location === undefined) {
-		location = result.Response.View[0].Result[0].Location;
-		mymap = L.map(id).setView([location.DisplayPosition.Latitude, location.DisplayPosition.Longitude], 13);
-	}
-	else mymap = L.map(id).setView([location.Locations[0].DisplayPosition.Latitude, location.Locations[0].DisplayPosition.Longitude], 13);
+        if(location === undefined) {
+            location = result.Response.View[0].Result[0].Location;
+            mymap = L.map(id).setView([location.DisplayPosition.Latitude, location.DisplayPosition.Longitude], 13);
+        }
+        else mymap = L.map(id).setView([location.Locations[0].DisplayPosition.Latitude, location.Locations[0].DisplayPosition.Longitude], 13);
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
@@ -139,129 +139,128 @@
             id: 'mapbox.streets'
         }).addTo(mymap);
 
-	var coordenadas = [];            
+        var coordenadas = [];            
 
-	{% for key,value in cosas_fecha.items %}
-	    
-	    function poner(lat,long,ord,key) { coordenadas.push([lat,long,ord,key]); }
+        {% for key,value in cosas_fecha.items %}
+            
+            function poner(lat,long,ord,key) { coordenadas.push([lat,long,ord,key]); }
 
-	    {% for cosa in value %}
+            {% for cosa in value %}
                 var city = "{{cosa.ciudad}}";
 
-		if(city == ciudad) {
-		    var direccion = "{{cosa.nombre}}, {{cosa.ciudad}}";
+                if(city == ciudad) {
+                    var direccion = "{{cosa.nombre}}, {{cosa.ciudad}}";
 
-		    geocoder.search({ searchText: direccion }, function(result) {		
-		        var location = result.Response.View[0].Result[0].Location;
+                    geocoder.search({ searchText: direccion }, function(result) {		
+                        var location = result.Response.View[0].Result[0].Location;
 
-			if(location === undefined) alert("No se ha encontrado la direccion: " + direccion); 
-			else {
-				var lat = location.DisplayPosition.Latitude;
-				var long = location.DisplayPosition.Longitude;
+                        if(location === undefined) alert("No se ha encontrado la direccion: " + direccion); 
+                        else {
+                            var lat = location.DisplayPosition.Latitude;
+                            var long = location.DisplayPosition.Longitude;
 
-				var visto = "{{cosa.visto}}";
-				var marker;
-				if(visto == "True") { marker = L.marker([lat,long], {icon : redIcon}); }
-				else { 
-				    marker = L.marker([lat,long], {icon: iconos["{{key}}" % 7]}); 
-				    var ord = "{{cosa.orden}}";
-				    poner(lat, long, ord, "{{key}}");
-				}
-				marker.bindPopup("{{cosa.nombre}}");
-				marker.addTo(mymap);
-			}
-		   }, function(error) { console.log(error); });                  
-		}
-	     {% endfor %}
-	{% endfor %} 
+                            var visto = "{{cosa.visto}}";
+                            var marker;
+                            if(visto == "True") { marker = L.marker([lat,long], {icon : redIcon}); }
+                            else { 
+                                marker = L.marker([lat,long], {icon: iconos["{{key}}" % 7]}); 
+                                var ord = "{{cosa.orden}}";
+                                poner(lat, long, ord, "{{key}}");
+                            }
+                            marker.bindPopup("{{cosa.nombre}}");
+                            marker.addTo(mymap);
+                        }
+                    }, function(error) { console.log(error); });                  
+                }
+            {% endfor %}
+        {% endfor %} 
 	
-	setTimeout(function() {
-		coordenadas.sort(function(a, b){ if(parseInt(a[3]) === parseInt(b[3])) return parseInt(a[2]) > parseInt(b[2]) ? true : false; else return parseInt(a[3]) > parseInt(b[3]); });
-		
-		if(coordenadas.length > 1) {
-			for(let i=0;i<(coordenadas.length - 1);++i) {
-				if(coordenadas[i][3] === coordenadas[i+1][3]) {				    
-				    var router = platform.getRoutingService(),
-					    routeRequestParams = {
-					    mode: 'shortest;pedestrian',
-					    waypoint0: [coordenadas[i][0],coordenadas[i][1]], 
-					    waypoint1: [coordenadas[i+1][0],coordenadas[i+1][1]],  
-					    routeattributes: 'waypoints,shape,legs',
-					    maneuverattributes: 'direction'
-					};
+        setTimeout(function() {
+            coordenadas.sort(function(a, b){ if(parseInt(a[3]) === parseInt(b[3])) return parseInt(a[2]) > parseInt(b[2]) ? true : false; else return parseInt(a[3]) > parseInt(b[3]); });
+            
+            console.log(coordenadas);
 
-				   router.calculateRoute( routeRequestParams, function (result) {
-					var route = result.response.route[0];
-					var lineString = new H.geo.LineString(),
-								routeShape = route.shape,
-								polyline;
+            if(coordenadas.length > 1) {
+                for(let i=0;i<(coordenadas.length - 1);++i) {
+                    if(coordenadas[i][3] === coordenadas[i+1][3]) {				    
+                        var router = platform.getRoutingService(),
+                            routeRequestParams = {
+                            mode: 'shortest;pedestrian',
+                            waypoint0: [coordenadas[i][0],coordenadas[i][1]], 
+                            waypoint1: [coordenadas[i+1][0],coordenadas[i+1][1]],  
+                            routeattributes: 'waypoints,shape,legs',
+                            maneuverattributes: 'direction'
+                        };
+                        router.calculateRoute( routeRequestParams, function (result) {
+                                var route = result.response.route[0];
+                                var lineString = new H.geo.LineString(),
+                                            routeShape = route.shape,
+                                            polyline;
 
-					var latlngs = [];
+                                var latlngs = [];
 
-					routeShape.forEach(function(point) {
-					    var parts = point.split(',');
-					    latlngs.push([parts[0],parts[1]]);
-					});
+                                routeShape.forEach(function(point) {
+                                    var parts = point.split(',');
+                                    latlngs.push([parts[0],parts[1]]);
+                                });
 
-					console.log(coordenadas[i][3] + " " + i);
-					L.polyline(latlngs, {color: colors[parseInt(coordenadas[i][3]) % 7]}).addTo(mymap);
-			    	  }, function(e) { console.log(e); });
-				}
-			}
-		}
-	   }, 1000);
+                                L.polyline(latlngs, {color: colors[parseInt(coordenadas[i][3]) % 7]}).addTo(mymap);
+                            }, function(e) { console.log(e); });
+                    }
+                }
+            }
+        }, 1000);
     }, function(e){ console.log(e) });
   }    
-
-  {% for c in viaje.ciudades.all%}
-    $("#mapas").append("<p>Mapa de {{c.nombre_ciudad}}:</p>");
-    $("#mapas").append("<div id=\"map{{c}}\" style=\"width: 80%;margin:auto; height: 400px;\"></div>");
+</script>
+<script>
+  {% for c in viaje.ciudades.all %}
+    $("#mapas").append("<p align=\"center\">{{c.nombre_ciudad}}</p>");
+    $("#mapas").append("<div id=\"map{{c}}\" style=\"width: 80%;margin:auto; margin-bottom:2%; height: 400px;\"></div>");
     cargarCiudad("{{c}}");
   {% endfor %}
 
   function pagar(a,b){
-  console.log(a);
-  console.log(b);
-  $.ajax({
-        url: '{% url "pagar" %}',
-        data: {
-          'elemento': a,
-          'pago' : b
-        },
-        dataType: 'json',
-        success: function (data) {
-          if (data.exito) {
-            alert("Se ha pagado correctamente");
-             location.reload();
-          }
-        }
-      });
+    console.log(a);
+    console.log(b);
+    $.ajax({
+            url: '{% url "pagar" %}',
+            data: {
+            'elemento': a,
+            'pago' : b
+            },
+            dataType: 'json',
+            success: function (data) {
+            if (data.exito) {
+                alert("Se ha pagado correctamente");
+                location.reload();
+            }
+            }
+    });
   }
+
   function ver_detalle(cosa){
-
-   var div = $("#d_"+cosa);
-   var ver = $("#vd_"+cosa);
-   var ocultar = $("#od_"+cosa);
-  if (div.hasClass("d-none")){
-  div.removeClass("d-none");
-  div.addClass("d-block");
-  ver.removeClass("d-block");
-    ver.addClass("d-none");
-    ocultar.removeClass("d-none");
-      ocultar.addClass("d-block");
-
-  }else{
-   div.addClass("d-none");
-   div.removeClass("d-block");
-    ver.removeClass("d-none");
-    ver.addClass("d-block");
-    ocultar.removeClass("d-block");
-      ocultar.addClass("d-none");
+    var div = $("#d_"+cosa);
+    var ver = $("#vd_"+cosa);
+    var ocultar = $("#od_"+cosa);
+    if (div.hasClass("d-none")){
+        div.removeClass("d-none");
+        div.addClass("d-block");
+        ver.removeClass("d-block");
+        ver.addClass("d-none");
+        ocultar.removeClass("d-none");
+        ocultar.addClass("d-block");
+    }else{
+        div.addClass("d-none");
+        div.removeClass("d-block");
+        ver.removeClass("d-none");
+        ver.addClass("d-block");
+        ocultar.removeClass("d-block");
+        ocultar.addClass("d-none");
+    }
   }
 
-
-  }
-   function cambia(a){
+  function cambia(a){
       console.log(a);
       var el = document.getElementById(a);
       var selecc = el.checked;
@@ -280,11 +279,11 @@
             },
             dataType: 'json',
             success: function (data) {
-            console.log("Estado");
-        console.log(data.estado);
-        var item = $("#"+data.pk);
-        var div = $("#d_"+data.pk);
-        // 1 es que se ha visto
+                console.log("Estado");
+                console.log(data.estado);
+                var item = $("#"+data.pk);
+                var div = $("#d_"+data.pk);
+                // 1 es que se ha visto
                 if (data.estado  == 0){
                     item.prop('checked', false);
                     div.empty();
@@ -295,38 +294,32 @@
                     div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR> "+data.fecha_visitado+"<BR>");
                 }
 
-                //location.reload();
-
-
-            }
-          });
+           }
+        });
    }
 
   function ver_detalle_(cosa){
-
    var div = $("#detalle_"+cosa);
    var ver = $("#ver_detalle_"+cosa);
    var ocultar = $("#ocultar_detalle_"+cosa);
-  if (div.hasClass("d-none")){
-  div.removeClass("d-none");
-  div.addClass("d-block");
-  ver.removeClass("d-block");
+   if (div.hasClass("d-none")){
+    div.removeClass("d-none");
+    div.addClass("d-block");
+    ver.removeClass("d-block");
     ver.addClass("d-none");
     ocultar.removeClass("d-none");
       ocultar.addClass("d-block");
-
-  }else{
-   div.addClass("d-none");
-   div.removeClass("d-block");
+   }else{
+    div.addClass("d-none");
+    div.removeClass("d-block");
     ver.removeClass("d-none");
     ver.addClass("d-block");
     ocultar.removeClass("d-block");
-      ocultar.addClass("d-none");
+    ocultar.addClass("d-none");
+   }
   }
 
-
-  }
-   function cambia_(a){
+  function cambia_(a){
       console.log(a);
       var el = document.getElementById("item_"+a);
       var selecc = el.checked;
@@ -345,11 +338,11 @@
             },
             dataType: 'json',
             success: function (data) {
-            console.log("Estado");
-        console.log(data.estado);
-        var item = $("#item_"+data.pk);
-        var div = $("#detalle_"+data.pk);
-        // 1 es que se ha visto
+                console.log("Estado");
+                console.log(data.estado);
+                var item = $("#item_"+data.pk);
+                var div = $("#detalle_"+data.pk);
+                // 1 es que se ha visto 
                 if (data.estado  == 0){
                     item.prop('checked', false);
                     div.empty();
@@ -360,72 +353,66 @@
                     div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR> "+data.fecha_visitado+"<BR>");
                 }
 
-                //location.reload();
-
-
             }
           });
    }
 
-function recargar_pagina(){
-location.reload();
-}
-   $('.carousel').carousel('pause')
+   function recargar_pagina(){
+     location.reload();
+   }
+
+   $('.carousel').carousel('pause');
 
 
-function cambiar_vista(){
-var por_ciudad = $("#por_ciudad");
-var boton = $("#boton_vista");
-var por_dia = $("#por_dia");
+    function cambiar_vista(){
+        var por_ciudad = $("#por_ciudad");
+        var boton = $("#boton_vista");
+        var por_dia = $("#por_dia");
 
-if (!por_ciudad.hasClass("d-none")){
-    por_ciudad.addClass("d-none");
-    por_dia.removeClass("d-none");
-    boton.html('Ver por ciudad');
-    console.log(1);
-}else{
-    por_ciudad.removeClass("d-none");
-    por_dia.addClass("d-none");
-    boton.html('Ver por dias');
-    console.log(2);
-}
+        if (!por_ciudad.hasClass("d-none")){
+            por_ciudad.addClass("d-none");
+            por_dia.removeClass("d-none");
+            boton.html('Ver por ciudad');
+            console.log(1);
+        }else{
+            por_ciudad.removeClass("d-none");
+            por_dia.addClass("d-none");
+            boton.html('Ver por dias');
+            console.log(2);
+        }
+    }
 
-}
+    function dynamicColors(){
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    }
 
-  </script>
-<script>
-function dynamicColors(){
-            var r = Math.floor(Math.random() * 255);
-            var g = Math.floor(Math.random() * 255);
-            var b = Math.floor(Math.random() * 255);
-            return "rgb(" + r + "," + g + "," + b + ")";
-         };
-var datos=[];
-var colores=[];
-var campos=[];
- {% for elemento, pago in diccionario.items %}
- campos.push("{{elemento.concepto}}");
- colores.push(dynamicColors());
- datos.push({{elemento.precio}}/{{viaje.num_personas}})
- {% endfor %}
+    var datos=[];
+    var colores=[];
+    var campos=[];
+    {% for elemento, pago in diccionario.items %}
+        campos.push("{{elemento.concepto}}");
+        colores.push(dynamicColors());
+        datos.push("{{elemento.precio}}/{{viaje.num_personas}}");
+    {% endfor %}
 
+    data = {
+        datasets: [{
+            data: datos,
+            backgroundColor: colores
+        }],
+        labels: campos
 
-data = {
-    datasets: [{
-        data: datos,
-        backgroundColor: colores
-    }],
-    labels: campos
+    };
+    var ctx = document.getElementById("myChart");
+    var myDoughnutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: data,
+        options: {}
+    });
 
-};
-var ctx = document.getElementById("myChart");
-var myDoughnutChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: data,
-    options: {}
-});
-</script>
-<script>
     function eliminar_elemento(a){
       console.log(a);
       var el = document.getElementById("item_"+a);
@@ -445,11 +432,11 @@ var myDoughnutChart = new Chart(ctx, {
             },
             dataType: 'json',
             success: function (data) {
-            console.log("Estado");
-        console.log(data.estado);
-        var item = $("#item_"+data.pk);
-        var div = $("#detalle_"+data.pk);
-        // 1 es que se ha visto
+                console.log("Estado");
+                console.log(data.estado);
+                var item = $("#item_"+data.pk);
+                var div = $("#detalle_"+data.pk);
+                // 1 es que se ha visto
                 if (data.estado  == 0){
                     item.prop('checked', false);
                     div.empty();
@@ -460,32 +447,25 @@ var myDoughnutChart = new Chart(ctx, {
                     div.append( data.descripcion+"<BR> "+data.fecha_a_visitar+"<BR> "+data.fecha_visitado+"<BR>");
                 }
 
-                //location.reload();
-
-
             }
           });
    }
 
-
-</script>
-<script>
    function eliminar_elemento_presupuesto(el,via){
-   var confirmar = confirm("¿Estás seguro de que quieres eliminar este elemento del presupuesto?");
-   if (confirmar){
-        $.ajax({
-            url: '{% url "eliminar_elemento_presupuesto" %}',
-            data: {
-              'elemento': el,
-              'viaje' : via,
-            },
-            dataType: 'json',
-            success: function (data) {
-                location.reload();
-            }
-            });
-   }
-
+    var confirmar = confirm("¿Estás seguro de que quieres eliminar este elemento del presupuesto?");
+    if (confirmar){
+            $.ajax({
+                url: '{% url "eliminar_elemento_presupuesto" %}',
+                data: {
+                'elemento': el,
+                'viaje' : via,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    location.reload();
+                }
+                });
+    }
    }
 </script>
 {% endblock %}
@@ -694,7 +674,7 @@ var myDoughnutChart = new Chart(ctx, {
       {% if cosa.visto == True  %}
 
 
-    <input type="checkbox" checked id="{{cosa.pk}}" onchange="cambia({{cosa.pk}})"> <strong>{{cosa.nombre}}</strong><br>
+                <strong>{{cosa.nombre}}</strong><br>
                 <p class="d-block" id="vd_{{cosa.pk}}" onclick="ver_detalle({{cosa.pk}})"><em>Ver detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
                 <p class="d-none" id="od_{{cosa.pk}}" onclick="ver_detalle({{cosa.pk}})"><em>Ocultar detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
 
@@ -709,7 +689,7 @@ var myDoughnutChart = new Chart(ctx, {
 
       {% else %}
 
-                <input type="checkbox" id="{{cosa.pk}}" onchange="cambia({{cosa.pk}})"> <strong>{{cosa.nombre}}</strong><br>
+                <strong>{{cosa.nombre}}</strong><br>
                 <p class="d-block" id="vd_{{cosa.pk}}" onclick="ver_detalle({{cosa.pk}})"><em>Ver detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
                 <p class="d-none" id="od_{{cosa.pk}}" onclick="ver_detalle({{cosa.pk}})"><em>Ocultar detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
 
@@ -746,7 +726,7 @@ var myDoughnutChart = new Chart(ctx, {
       {% if cosa.visto == True  %}
 
 
-    <input type="checkbox" checked id="item_{{cosa.pk}}" onchange="cambia_({{cosa.pk}})"> <strong>{{cosa.nombre}}</strong> <em>({{cosa.ciudad.nombre_ciudad}})</em><br>
+                <strong>{{cosa.nombre}}</strong> <em>({{cosa.ciudad.nombre_ciudad}})</em><br>
                 <p class="d-block" id="ver_detalle_{{cosa.pk}}" onclick="ver_detalle_({{cosa.pk}})"><em>Ver detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
                 <p class="d-none" id="ocultar_detalle_{{cosa.pk}}" onclick="ver_detalle_({{cosa.pk}})"><em>Ocultar detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
 
@@ -763,7 +743,7 @@ var myDoughnutChart = new Chart(ctx, {
 
       {% else %}
 
-                <input type="checkbox" id="item_{{cosa.pk}}" onchange="cambia_({{cosa.pk}})"> <strong>{{cosa.nombre}}</strong><br>
+                <strong>{{cosa.nombre}}</strong><br>
                 <p class="d-block" id="ver_detalle_{{cosa.pk}}" onclick="ver_detalle_({{cosa.pk}})"><em>Ver detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
                 <p class="d-none" id="ocultar_detalle_{{cosa.pk}}" onclick="ver_detalle_({{cosa.pk}})"><em>Ocultar detalles <i class="fa fa-plus" style="font-size:16px"></i></em></p>
 
@@ -807,7 +787,8 @@ var myDoughnutChart = new Chart(ctx, {
 
 
 
-<div class="container-fluid">
+<div class="col-12 col-sm-12 col-md-12" style="margin-top:2%;">  
+  <h3><strong>Mapas:</strong></h3>
   <div id="mapas">
 
 

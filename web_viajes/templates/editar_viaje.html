@@ -10,7 +10,7 @@
 
 {% block nombre %}Viaje{% endblock %}
 {% block extra %}
-Ciudades del viaje: <i class="fa fa-edit" style="font-size:24px" onclick="abrir_ciudades()">abirir</i>
+Ciudades del viaje: <i class="fa fa-edit" style="font-size:24px" onclick="abrir_ciudades()">abrir</i>
     {%for c in object.ciudades.all%}
     <div><p id="c_{{c.pk}}">{{c.nombre_ciudad}}</p><div id="d_{{c.pk}}" onclick="eliminar_ciudad({{c.pk}})">Eliminar ciudad del viaje</div></div>
     {%endfor%}
@@ -73,6 +73,26 @@ Usuarios del viaje: <i class="fa fa-edit" style="font-size:24px" onclick="abrir_
 
 {% block scripts %}
 <script>
+    alert({{ user.get_username }} + " " + {{ pk }});
+$( document ).ready(function() { 
+    $.ajax({
+        url: '{% url "comprobar_usuarios_viaje" %}',
+        dataType: 'json',
+        data : {
+            'usuario': {{ user.get_username }},
+            'viaje': {{pk}}
+        },
+        success: function() {
+            alert("Hecho");
+        }
+    });
+});
+
+
+{% if user.is_authenticated == False %} 
+    $(location).attr('href','{% url 'inicio' %}');
+{% endif %}
+
 var ciudades_a_eliminar = new Set();
 var usuarios_a_eliminar = new Set();
 
