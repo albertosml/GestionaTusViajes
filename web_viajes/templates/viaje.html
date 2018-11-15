@@ -29,6 +29,20 @@
 <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
 <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
 <script type="text/javascript">
+$( document ).ready(function() { 
+    $.ajax({
+        url: '{% url "comprobar_usuarios_viaje" %}',
+        dataType: 'json',
+        data : {
+            'usuario': '{{ user.get_username }}',
+            'viaje': '{{ viaje.pk }}'
+        },
+        success: function(data) {
+            if(!data.bandera) $(location).attr('href','{% url 'inicio' %}');
+        }
+    });
+});
+
   $( "input[id*='map']" ).addClass("ajustar");
 
   var iconos = [];

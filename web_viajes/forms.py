@@ -227,6 +227,11 @@ class FotoDelete(DeleteView):
     template_name = 'eliminar_foto.html'
     success_url = reverse_lazy('inicio')
 
+class FotoDeleteCiudad(DeleteView):
+    model = Foto
+    template_name = 'eliminar_foto_ciudad.html'
+    success_url = reverse_lazy('inicio')
+
 class CosaDelete(DeleteView):
     model = CosasPorVer
     template_name = 'eliminar_cosaver.html'

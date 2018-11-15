@@ -379,15 +379,14 @@ def add_photo(request,pk):
             if request.user.is_authenticated:
                 usuario = User.objects.get(username=request.user.username)
 
+                foto = Foto()
+                foto.imagen = form.cleaned_data['imagen']
+                foto.monumento = form.cleaned_data['monumento']
+                foto.nombre_ciudad = ciudad
+                foto.nombre_usuario = usuario
 
-            foto = Foto()
-            foto.imagen = form.cleaned_data['imagen']
-            foto.monumento = form.cleaned_data['monumento']
-            foto.nombre_ciudad = ciudad
-            foto.nombre_usuario = usuario
-
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            foto.save()
+                # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+                foto.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse('ciudad',args=[pk]))
@@ -739,7 +738,7 @@ def add_photo_viaje(request,pk):
         form = AnadirFotoViaje(pk=pk)
 
 
-    return render(request, 'foto_anadir.html', {'form': form})
+    return render(request, 'foto_anadir.html', {'form': form, 'viaje': pk})
 
 def create_user(request):
     if request.method == 'POST':
@@ -1171,13 +1170,23 @@ def comprobar_usuarios_viaje(request):
     user = User.objects.filter(username__contains=usuario)
     viaje = Viaje.objects.get(pk=id_viaje)
 
-    print(usuario + " " + id_viaje)
-
     bandera = False
 
     for u in viaje.usuarios.all():
-        if u == user: 
+        if u.username == usuario: 
             bandera = True
 
-    if bandera == False:
-        return HttpResponseRedirect(reverse('inicio'))
+    data = { 'bandera': bandera }
+    return JsonResponse(data)
+
+def comprobar_usuario_foto(request):
+    usuario = request.GET.get('usuario', None)
+    pk = request.GET.get('foto', None)
+
+    u = User.objects.filter(username__contains=usuario)
+    foto = Foto.objects.filter(pk=pk)
+
+    bandera = (u.get().username == foto.get().nombre_usuario)
+    
+    data = { 'bandera': bandera }
+    return JsonResponse(data)

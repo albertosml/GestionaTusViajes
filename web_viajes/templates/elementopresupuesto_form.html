@@ -16,6 +16,20 @@
 
 {% block scripts %}
 <script>
+$( document ).ready(function() { 
+    $.ajax({
+        url: '{% url "comprobar_usuarios_viaje" %}',
+        dataType: 'json',
+        data : {
+            'usuario': '{{ user.get_username }}',
+            'viaje': '{{ object.pk}}'
+        },
+        success: function(data) {
+            if(!data.bandera) $(location).attr('href','{% url 'inicio' %}');
+        }
+    });
+});
+
 //cargar el formulario
 $('#form').on('submit',function(e){
 alert("se esta enviando");

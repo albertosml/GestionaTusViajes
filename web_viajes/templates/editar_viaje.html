@@ -73,25 +73,19 @@ Usuarios del viaje: <i class="fa fa-edit" style="font-size:24px" onclick="abrir_
 
 {% block scripts %}
 <script>
-    alert({{ user.get_username }} + " " + {{ pk }});
 $( document ).ready(function() { 
     $.ajax({
         url: '{% url "comprobar_usuarios_viaje" %}',
         dataType: 'json',
         data : {
-            'usuario': {{ user.get_username }},
-            'viaje': {{pk}}
+            'usuario': '{{ user.get_username }}',
+            'viaje': '{{ object.pk}}'
         },
-        success: function() {
-            alert("Hecho");
+        success: function(data) {
+            if(!data.bandera) $(location).attr('href','{% url 'inicio' %}');
         }
     });
 });
-
-
-{% if user.is_authenticated == False %} 
-    $(location).attr('href','{% url 'inicio' %}');
-{% endif %}
 
 var ciudades_a_eliminar = new Set();
 var usuarios_a_eliminar = new Set();

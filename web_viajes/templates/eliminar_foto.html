@@ -20,3 +20,33 @@
       </div>
 	</form>
 {% endblock %}
+
+{% block scripts %}
+<script>
+$( document ).ready(function() { 
+    $.ajax({
+        url: '{% url "comprobar_usuarios_viaje" %}',
+        dataType: 'json',
+        data : {
+            'usuario': '{{ user.get_username }}',
+            'viaje': '{{ object.pk}}'
+        },
+        success: function(data) {
+            if(!data.bandera) $(location).attr('href','{% url 'inicio' %}');
+
+						$.ajax({
+								url: '{% url "comprobar_usuario_foto" %}',
+								dataType: 'json',
+								data : {
+										'usuario': '{{ user.get_username }}',
+										'foto': '{{ object.pk }}'
+								},
+								success: function(data) {
+									if(!data.bandera) $(location).attr('href','{% url 'inicio' %}');
+								}
+						});
+        }
+    });
+});
+</script>
+{% endblock %}
