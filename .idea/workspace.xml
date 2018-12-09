@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f920f51-a917-41a1-8108-0c8225f3ac8f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/static/css/estilos.css" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/static/css/estilos.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_viajes/templates/viaje.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/viaje.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_viajes/templates/editar_viaje.html" beforeDir="false" afterPath="$PROJECT_DIR$/web_viajes/templates/editar_viaje.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,32 +13,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="viaje.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje.html">
+      <file leaf-file-name="editar_viaje.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web_viajes/templates/editar_viaje.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13345">
-              <caret line="785" selection-start-line="785" selection-end-line="826" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ciudad.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web_viajes/templates/ciudad.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="114" column="32" selection-start-line="114" selection-start-column="32" selection-end-line="114" selection-end-column="32" />
+            <state relative-caret-position="119">
+              <caret line="46" column="4" selection-start-line="46" selection-start-column="4" selection-end-line="46" selection-end-column="4" />
               <folding>
-                <element signature="n#style#0;n#div#2;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="e#1031#1059#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="estilos.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web_viajes/static/css/estilos.css">
+      <file leaf-file-name="viaje_anadir_puro.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2720">
-              <caret line="160" column="6" selection-start-line="160" selection-start-column="6" selection-end-line="160" selection-end-column="6" />
+            <state relative-caret-position="85">
+              <caret line="104" selection-start-line="104" selection-end-line="127" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -72,9 +61,9 @@
       <find>add_valoracion</find>
       <find>add_valoration</find>
       <find>paginator</find>
-      <find>alert</find>
       <find>fondo</find>
       <find>datos</find>
+      <find>alert</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -97,6 +86,7 @@
         <option value="$PROJECT_DIR$/web_viajes/templates/mis_viajes.html" />
         <option value="$PROJECT_DIR$/web_viajes/templates/viaje.html" />
         <option value="$PROJECT_DIR$/web_viajes/static/css/estilos.css" />
+        <option value="$PROJECT_DIR$/web_viajes/templates/editar_viaje.html" />
       </list>
     </option>
   </component>
@@ -179,16 +169,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2514706" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25104168" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32591414" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.1434644" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -518,27 +509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="80" column="47" selection-start-line="80" selection-start-column="47" selection-end-line="80" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/editar_viaje.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="58" column="64" lean-forward="true" selection-start-line="58" selection-start-column="64" selection-end-line="58" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="106" column="45" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/templates/mis_viajes.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -546,26 +516,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web_viajes/static/css/estilos.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2720">
-          <caret line="160" column="6" selection-start-line="160" selection-start-column="6" selection-end-line="160" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13345">
-          <caret line="785" selection-start-line="785" selection-end-line="826" selection-end-column="6" />
+        <state relative-caret-position="85">
+          <caret line="792" column="4" selection-start-line="792" selection-start-column="4" selection-end-line="792" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web_viajes/templates/ciudad.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="114" column="32" selection-start-line="114" selection-start-column="32" selection-end-line="114" selection-end-column="32" />
+        <state relative-caret-position="612">
+          <caret line="128" selection-start-line="128" selection-end-line="128" />
           <folding>
             <element signature="n#style#0;n#div#2;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/static/css/estilos.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="155" column="23" selection-start-line="155" selection-start-column="23" selection-end-line="155" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1360">
+          <caret line="80" column="47" selection-start-line="80" selection-start-column="47" selection-end-line="80" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/viaje_anadir_puro.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="104" selection-start-line="104" selection-end-line="127" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_viajes/templates/editar_viaje.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="46" column="4" selection-start-line="46" selection-start-column="4" selection-end-line="46" selection-end-column="4" />
+          <folding>
+            <element signature="e#1031#1059#0" expanded="true" />
           </folding>
         </state>
       </provider>

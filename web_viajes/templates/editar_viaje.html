@@ -3,70 +3,83 @@
 {% load staticfiles %}
 
 {% block titulo %}
-    <title>Editar Viaje</title>
-  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<title>Editar Viaje</title>
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 
 {% endblock %}
 
 {% block nombre %}Viaje{% endblock %}
 {% block extra %}
-Ciudades del viaje: <i class="fa fa-edit" style="font-size:24px" onclick="abrir_ciudades()">abrir</i>
-    {%for c in object.ciudades.all%}
-    <div><p id="c_{{c.pk}}">{{c.nombre_ciudad}}</p><div id="d_{{c.pk}}" onclick="eliminar_ciudad({{c.pk}})">Eliminar ciudad del viaje</div></div>
-    {%endfor%}
-<div id="ciudades_cambiar" class="d-none">
-    <strong>Ciudades:</strong>
-
-    <div class="col-8">
-        <input class="form-control" type="text" style="border-color: orange;" id="buscador_ciudades">
-    </div>
 
 
-    <div class="col-12 col-md-8 " style="margin:auto; ">
-    + Ciudades a añadir al viaje
-    </div>
-    <div id="ciudades_anadidas" style="margin:auto;text-align:center;">
+<div class="col-12 col-md-8 " style="margin:auto; ">
+    <strong>Ciudades:</strong> <i class="fa fa-edit" style="font-size:24px" onclick="abrir_ciudades()"></i>
+    <div id="ciudades_cambiar" class="d-none">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+                <input class="form-control" type="text" style="border-color: orange;" id="buscador_ciudades">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-6 col-md-6 ">
+                <p class="text-center"><strong> Ciudades añadidas</strong></p>
+                <div id="ciudades_anadidas" class="col-6  col-sm-12" style="margin:auto; text-align:center;">
+                    {%for c in object.ciudades.all%}
+                    <div>
+                        <p id="c_{{c.pk}}" style="display:inline-block">{{c.nombre_ciudad}}</p>
+                        <button id="d_{{c.pk}}" onclick="eliminar_ciudad({{c.pk}})">Eliminar ciudad del viaje</button>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+            <div class="col-6 col-md-6 ">
+                <p class="text-center"><strong> Añadir ciudades</strong></p>
+                <div id="ciudades_anadir" class="col-12 col-md-8 " style="margin:auto;text-align:center;">
+                </div>
+            </div>
+        </div>
 
     </div>
-    <div class="col-12 col-md-8 " style="margin:auto; ">
-    + Todas las ciudades
-    </div>
-    <div id="ciudades_anadir" class="col-12 col-md-8 " style="margin:auto;text-align:center; max-height:30px; scroll-y:true">
-
-    </div>
-    <br>
 </div>
-Usuarios del viaje: <i class="fa fa-edit" style="font-size:24px" onclick="abrir_usuarios()"></i>
-    {% for u in object.usuarios.all%}
-    <div>
-        <p id="u_{{c.pk}}">{{u.username}}</p>
-        {%if u.username != user.get_username %}
-        <div id="du_{{u.pk}}" onclick="eliminar_usuario({{u.pk}})">Eliminar usuario del viaje</div>
-        {%endif %}
-    </div>
-    {%endfor%}
-<div id="usuarios_cambiar" class="d-none">
-    <strong>Usuarios:</strong>
+<br>
+<div class="col-12 col-md-8 " style="margin:auto; ">
+    <strong>Usuarios del viaje:</strong> <i class="fa fa-edit" style="font-size:24px" onclick="abrir_usuarios()"></i>
+    <div id="usuarios_cambiar" class="d-none">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+                <input class="form-control" type="text" style="border-color: orange;" id="buscador_usuarios">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-6 col-md-6 ">
+                <p class="text-center"><strong> Usuarios añadidos</strong></p>
+                <div id="usuarios_anadidos" class="col-6  col-sm-12" style="margin:auto; text-align:center;">
+                    {% for u in object.usuarios.all%}
+                    <div>
+                        <p id="u_{{c.pk}}">{{u.username}}</p>
+                        {%if u.username != user.get_username %}
+                        <button id="du_{{u.pk}}" onclick="eliminar_ciudad({{u.pk}})">Eliminar ciudad del viaje</button>
+                        {%endif %}
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+            <div class="col-6 col-md-6 ">
+                <p class="text-center"><strong> Añadir usuarios</strong></p>
+                <div id="usuarios" class="col-12 col-md-8 " style="margin:auto;text-align:center;">
+                </div>
+            </div>
+        </div>
 
-    <div class="col-8">
-        <input class="form-control" type="text" style="border-color: orange;" id="buscador_usuarios">
     </div>
-
-
-    <div class="col-12 col-md-8 " style="margin:auto; ">
-    + Usuarios por añadir al viaje
-    </div>
-    <div id="usuarios_anadidos" class="col-6  col-sm-12" style="margin:auto; text-align:center;">
-
-    </div>
-    <div class="col-12 col-md-8 "  style="margin:auto; ">
-    + Total usuarios
-    </div>
-    <div id="usuarios" class="col-12 col-md-8 " style="margin:auto;text-align:center;">
-
-    </div>
-    <br>
 </div>
+
 {% endblock %}
 
 {% block boton %}Editar{% endblock %}
@@ -195,7 +208,8 @@ $("#usuarios").empty();
 
 //cargar el formulario
 $('#form').on('submit',function(e){
-alert("se esta enviando");
+
+
 e.preventDefault();
 console.log($(this).serialize())
                     us = Array.from(usuarios_a_anadir);
@@ -266,6 +280,7 @@ console.log($(this).serialize())
             }
        });
 });
+
 
 
 </script>
