@@ -160,3 +160,15 @@ margin:auto;
 .comentario{
     asbackground:rgba(0,0,0,0.5);
 }
+
+.portada{
+background-image: url('C:\Users\Marcos Lupion\Documents\GestionaTusViajesDespliegue\GestionaTusViajes\media\jack_sucio.jpg');
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+   height: 100%;
+   width: 100% ;
+   text-align: center;
+
+}
