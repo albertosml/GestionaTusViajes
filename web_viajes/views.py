@@ -19,8 +19,6 @@ from .models import Valor, Item_Valoracion, Ciudad,PuntuacionFoto, Viaje, Valora
 
 
 # se trata de la pagina principal de la aplicacion
-
-
 def travels(request):
     ahora = datetime.datetime.now().date()
     top_ciudades = devolver_top_ciudades()
@@ -70,6 +68,7 @@ def devolver_mis_viajes(request):
 def city(request,pk):
     ciudad = Ciudad.objects.get(pk=pk)
     
+    # Fotos
     page_f = request.GET.get('page_f')
     fotos = Foto.objects.filter(nombre_ciudad=pk,idViaje=None)
     valoraciones_foto = list()
@@ -78,7 +77,7 @@ def city(request,pk):
         for p in puntuaciones:
             valoraciones_foto.append(p)
 
-    paginator = Paginator(fotos, 1)
+    paginator = Paginator(fotos, 3)
     try:
         f = paginator.page(page_f)
     except PageNotAnInteger:
@@ -86,9 +85,10 @@ def city(request,pk):
     except EmptyPage:
         f = paginator.page(paginator.num_pages)
     
+    # Valoraciones
     page_v = request.GET.get('page_v')
     valoraciones = Valoracion.objects.filter(nombre_ciudad=pk)
-    paginator_v = Paginator(valoraciones, 1)
+    paginator_v = Paginator(valoraciones, 3)
     try:
         v = paginator_v.page(page_v)
     except PageNotAnInteger:
@@ -96,9 +96,10 @@ def city(request,pk):
     except EmptyPage:
         v = paginator_v.page(paginator_v.num_pages)
 
+    # Entradas
     page_e = request.GET.get('page_e')
     entradas = EntradaForo.objects.filter(nombre_ciudad=pk)
-    paginator_e = Paginator(entradas, 1)
+    paginator_e = Paginator(entradas, 3)
     try:
         e = paginator_e.page(page_e)
     except PageNotAnInteger:
@@ -117,8 +118,8 @@ def travel(request,pk):
 
     diccionario = {}
     pagos_lista = list()
-    despues = 0;
-    pagado_antes = 0;
+    despues = 0
+    pagado_antes = 0
     if presupuesto is not None:
         if viaje.planificacion == True:
             for p in presupuesto:
