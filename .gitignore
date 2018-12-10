@@ -4,5 +4,4 @@
 # Database
 *.sqlite3
 
-/web_viajes/__pycache__/
-/web_viajes/migrations/
+
